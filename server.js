@@ -40,6 +40,19 @@ app.get('/', (req,res)=>{
     var salida = template(objeto);
     res.send(salida);
 })
+app.get('/menu', (req, res) => {
+    var archivo = fs.readFileSync('./views/menu.hbs', 'utf-8', (err, data) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("archivo leído");
+        }
+    });
+    var template = Handlebars.compile(archivo);
+    var salida = template(objeto);
+    res.send(salida);
+});
+
 
 app.post('/login', (req,res)=>{
 

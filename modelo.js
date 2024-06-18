@@ -53,20 +53,20 @@ function obtener(){
 function guardarComercio(data){
     console.log("guardarComercio(data) --> modelo")
     console.log(data)
-    let str_comercios = fs.readFileSync('./comercios.txt','utf-8')
+    let str_comercios = fs.readFileSync('./db/comercios.txt','utf-8')
     let comercios = []
     if(str_comercios){
         comercios = JSON.parse(str_comercios)
     }
     
     comercios.push(data)
-    fs.writeFileSync('./comercios.txt',JSON.stringify(comercios))
+    fs.writeFileSync('./db/comercios.txt',JSON.stringify(comercios))
 }
 
 function obtenerComercio(){
     console.log("obtenerComercio --> modelo")
     
-    let str_comercios = fs.readFileSync('./comercios.txt','utf-8')
+    let str_comercios = fs.readFileSync('./db/comercios.txt','utf-8')
     let comercios = []
     if(str_comercios){
         comercios = JSON.parse(str_comercios)

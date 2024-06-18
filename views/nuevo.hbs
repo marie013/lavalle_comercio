@@ -3,18 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <title>Nuevo Usuario</title>
 </head>
-<body class="bg-indigo text-black font-inter">
+<body class="bg-indigo text-black font-inter p-6">
     <div class="container mx-auto py-8">
         <h1 class="text-3xl font-bold mb-4">Regístrate gratis</h1>
-        <form action="{{url}}/agregarComercio" method="POST">
-            <p><label class="text-lg">Nombre de comercio:</label><input type="text" class="block w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" name="nombre" required></p>
-            <p><label class="text-lg">CUIT:</label><input type="number" class="block w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" name="cuit" required></p>
-            <p><label class="text-lg">Dirección:</label><input type="text" class="block w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" name="direccion" required></p>
-            <input type="submit" class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md cursor-pointer hover:bg-indigo-700 transition duration-300 ease-in-out" value="Enviar">
-            <button class="mt-4 px-4 py-2 bg-red-600 text-white rounded-md cursor-pointer hover:bg-red-700 transition duration-300 ease-in-out" type="reset">Cancelar</button>
+        <form action="{{url}}/agregar" method="POST">
+            <p><label class="text-lg">Nombre de usuario:</label><input type="text" class="block w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" name="nombre" required></p>
+            <p><label class="text-lg">Email:</label><input type="email" class="block w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" name="email" required></p>
+            <p><label class="text-lg">Telefono:</label><input type="number" class="block w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" name="telefono" required></p>
+            <p><label class="text-lg">Contraseña:</label><input type="password" class="block w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" name="contraseña" required ></p>
+            <input type="submit" class="mt-4 px-4 py-2 bg-yellow-500 text-white rounded-md cursor-pointer hover:bg-yellow-600 transition duration-300 ease-in-out" value="Enviar">
+            <button class="mt-4 px-4 py-2 bg-red-600 text-white rounded-md cursor-pointer hover:bg-red-700 transition duration-300 ease-in-out" type="reset" onclick="window.location.href='{{url}}/menu'">Cancelar</button>
+    
         </form>
     </div>
 </body>

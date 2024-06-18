@@ -1,1 +1,0 @@
-[{"cuit":null},{"nombre":"Cannes","cuit":2345,"direccion":"Calle Dr Moreno 587"},{"nombre":"Cannes","cuit":3434,"direccion":"Calle Dr Moreno 587"},{"nombre":"Cannes","cuit":4456,"direccion":"Calle Dr Moreno 587"}]
