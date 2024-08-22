@@ -1,3 +1,4 @@
+
 const express = require("express");
 const path = require('path')
 const Handlebars = require('handlebars');
@@ -7,6 +8,8 @@ const Seguridad = require("./seguridad.js");
 const app = express();
 
 const Controlador = require('./controlador');
+const { default: axios } = require("axios");
+
 
 app.use(express.json());
 app.use(express.urlencoded({extended : false}))
@@ -82,33 +85,41 @@ app.get('/menu', (req, res) => {
 });
 
 
-app.post('/login', (req,res)=>{
-
-    console.log("browser --> server 'post/login'");
-    console.log("server --> seguridad 'registrado(req.body)'")
-
-    let registrado = Seguridad.registrado(req.body);
+app.post('/login', (req, res) => {
+    console.log("browser --> server '/login'");
+    console.log("server --> backend '/login'");
+    console.log("Datos recibidos del cliente:", req.body);
     
+    axios.post('http://localhost:3333/login', {
+        email: req.body.email,
+        contraseña: req.body.contraseña
+    })
+    .then(response => {
+        if (response.status === 200) {
+            console.log("server <-r- backend 'usuario autenticado'");
 
-    if(registrado==true){
-        console.log("server <-r- seguridad 'true'");
-        var archivo = fs.readFileSync('./views/menu.hbs','utf-8',(err,data)=>{
-            if(err){
-                console.log(err);         
-            }else{
-                //console.log("archivo leído");
-            }
-        });
-        var template = Handlebars.compile(archivo);
-        var salida = template(objeto);
-        console.log("browser <-r- server 'menu.html'")
-        res.send(salida);
-    }else{
-        console.log("server <-r- seguridad 'false'");
-        console.log("browser <-r- server 'Error...!!!.html'")
-        res.send("<p>Error...!!!</p>");
-    }
-})
+            var archivo = fs.readFileSync('./views/menu.hbs', 'utf-8', (err, data) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send('Error al leer la plantilla');
+                }
+            });
+
+            var template = Handlebars.compile(archivo);
+            var salida = template(objeto);
+            console.log("browser <-r- server 'menu.html'");
+            res.send(salida);
+        } else {
+            console.log("server <-r- backend 'credenciales inválidas'");
+            res.send("<p>Error: Credenciales inválidas</p>");
+        }
+    })
+    .catch(error => {
+        console.error('Error en el login:', error);
+        res.status(500).send('Error en el login');
+    });
+});
+
 
 app.get('/nuevo', (req,res)=>{
     console.log("llegó un post/nuevo");
@@ -148,6 +159,29 @@ app.post('/agregar',(req, res)=>{
     var salida = template(objeto);
     res.send(salida);   
 })
+app.get('/listarUsuarios', (req, res) => {
+    axios.get('http://localhost:3333/usuario/all')
+        .then(response => {
+            const usuariosRegistrados = response.data.usuariosRegistrados;
+            console.log("Usuarios recibidos", usuariosRegistrados);
+            var archivo = fs.readFileSync('./views/listarUsuarios.hbs', 'utf-8', (err, data) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send('Error al leer la plantilla');
+                } else {
+                    console.log("archivo leído");
+                }
+            }); 
+            var template = Handlebars.compile(archivo);
+            var salida = template({usuarios: usuariosRegistrados});
+            console.log("Datos enviados al template: ", {usuarios: usuariosRegistrados});
+            res.send(salida);
+        })
+        .catch(error => {
+            console.error('Error al obtener usuarios:', error);
+            res.status(500).send('Error al obtener usuarios');
+        });
+});
 app.get('/agregarComercio', (req,res)=>{
     console.log("llegó un post/agregarComercio");
     
