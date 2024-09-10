@@ -71,8 +71,20 @@ app.get('/footer', (req,res)=>{
     res.send(salida);
 })
 
-app.get('/menu', (req, res) => {
+app.get('/menus', (req, res) => {
     var archivo = fs.readFileSync('./views/menu.hbs', 'utf-8', (err, data) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("archivo leído");
+        }
+    });
+    var template = Handlebars.compile(archivo);
+    var salida = template(objeto);
+    res.send(salida);
+});
+app.get('/sobrenosotros', (req, res) => {
+    var archivo = fs.readFileSync('./views/sobreNosotros.hbs', 'utf-8', (err, data) => {
         if (err) {
             console.log(err);
         } else {
@@ -85,7 +97,7 @@ app.get('/menu', (req, res) => {
 });
 
 
-app.post('/login', (req, res) => {
+app.post('/menu', (req, res) => {
     console.log("browser --> server '/login'");
     console.log("server --> backend '/login'");
     console.log("Datos recibidos del cliente:", req.body);
