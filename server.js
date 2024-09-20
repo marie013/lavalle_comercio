@@ -43,46 +43,7 @@ app.get('/', (req,res)=>{
     var salida = template(objeto);
     res.send(salida);
 })
-//para visualizar
-app.get('/navbar', (req,res)=>{
 
-     var archivo = fs.readFileSync('./views/navbar.hbs','utf-8',(err,data)=>{
-        if(err){
-            console.log(err);         
-        }else{
-            console.log("archivo leído");
-        }
-    });
-    var template = Handlebars.compile(archivo);
-    var salida = template(objeto);
-    res.send(salida);
-})
-app.get('/footer', (req,res)=>{
-
-     var archivo = fs.readFileSync('./views/footer.hbs','utf-8',(err,data)=>{
-        if(err){
-            console.log(err);         
-        }else{
-            console.log("archivo leído");
-        }
-    });
-    var template = Handlebars.compile(archivo);
-    var salida = template(objeto);
-    res.send(salida);
-})
-
-app.get('/menus', (req, res) => {
-    var archivo = fs.readFileSync('./views/menu.hbs', 'utf-8', (err, data) => {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("archivo leído");
-        }
-    });
-    var template = Handlebars.compile(archivo);
-    var salida = template(objeto);
-    res.send(salida);
-});
 app.get('/sobrenosotros', (req, res) => {
     var archivo = fs.readFileSync('./views/sobreNosotros.hbs', 'utf-8', (err, data) => {
         if (err) {
@@ -132,6 +93,25 @@ app.post('/menu', (req, res) => {
     });
 });
 
+app.post('/agregarProducto', (req, res) => {
+    console.log("Datos recibidos:", req.body);
+    
+    axios.post('http://localhost:3333/producto/registrar', {
+        nombre_producto: req.body.nombre_producto,
+        precio: req.body.precio,
+        detalle_producto: req.body.detalle_producto,
+        categoria: req.body.categoria,
+        // imagenes --> `multipart/form-data`
+    })
+    .then(response => {
+        console.log("Producto enviado al servidor externo:", response.data);
+        res.status(200).send("Producto agregado exitosamente");
+    })
+    .catch(error => {
+        console.error('Error al enviar producto al servidor externo:', error);
+        res.status(500).send('Error al agregar producto');
+    });
+});
 
 app.get('/nuevo', (req,res)=>{
     console.log("llegó un post/nuevo");
@@ -171,6 +151,36 @@ app.post('/agregar',(req, res)=>{
     var salida = template(objeto);
     res.send(salida);   
 })
+
+app.get('/prueba', (req,res)=>{
+    console.log("llegó un post/prueba");
+    
+    var archivo = fs.readFileSync('./views/prueba.hbs','utf-8',(err,data)=>{
+        if(err){
+            console.log(err);         
+        }else{
+            console.log("archivo leído");
+        }
+    });
+    var template = Handlebars.compile(archivo);
+    var salida = template(objeto);
+    res.send(salida);
+})
+
+app.get('/agregarProducto', (req, res) => {
+    var archivo = fs.readFileSync('./views/agregarProducto.hbs', 'utf-8', (err, data) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Error al leer la plantilla');
+        } else {
+            console.log("archivo de agregarProducto leído");
+        }
+    });
+    var template = Handlebars.compile(archivo);
+    var salida = template(objeto);  
+    res.send(salida);
+});
+
 app.get('/listarUsuarios', (req, res) => {
     axios.get('http://localhost:3333/usuario/all')
         .then(response => {
@@ -209,31 +219,24 @@ app.get('/agregarComercio', (req,res)=>{
     res.send(salida);
 })
 
-app.post('/agregarComercio',(req, res)=>{
-    console.log("llegó post/agregarComercio");
-    console.log(req.body);
-    Controlador.nuevoComercio(req.body);
-    // console.log(req.body.afiliado);
-    // if(req.body.afiliado == undefined){
-    //     req.body.afiliado = false;
-    // }else{
-    //     req.body.afiliado = true;
-    // }
-    // console.log(req.body);
-    // console.log(req.body.afiliado);
+app.post('/agregarComercio', (req, res) => {
+    console.log("Datos recibidos:", req.body);
     
-    var archivo = fs.readFileSync('./views/menu.hbs','utf-8',(err,data)=>{
-        if(err){
-            console.log(err);         
-        }else{
-            console.log("archivo leído");
-        }
+    axios.post('http://localhost:3333/comercio/registrar/:id', {  
+        nombre: req.body.nombre,
+        cuit: req.body.cuit,
+        direccion: req.body.direccion,
+        
+    })
+    .then(response => {
+        console.log("Comercio enviado al servidor externo:", response.data);
+        res.status(200).send("Comercio agregado exitosamente");
+    })
+    .catch(error => {
+        console.error('Error al enviar comercio al servidor externo:', error);
+        res.status(500).send('Error al agregar comercio');
     });
-    var template = Handlebars.compile(archivo);
-    var salida = template(objeto);
-    res.send(salida);   
-})
-
+});
 
 
 app.listen(port, ()=>{

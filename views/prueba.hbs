@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="mb-4 p-6 flex space-x-4">
+       
+        <button id="openModalProducto" class="text-amber-500 bg-zinc-800 border-0 py-2 px-6 focus:outline-none hover:bg-zinc-800 rounded text-lg">
+            Agregar producto
+        </button>
+
+        
+        <button id="openModalComercio" class="text-black bg-amber-500 border-0 py-2 px-6 focus:outline-none hover:bg-amber-600 rounded text-lg">
+            Agregar comercio
+        </button>
+    </div>
+
+    <!-- modals -->
+    <div id="myModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center hidden">
+        <div id="modalContent" class="bg-white p-6 rounded-lg shadow-lg"></div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('myModal');
+        const modalContent = document.getElementById('modalContent');
+        const openModalProducto = document.getElementById('openModalProducto');
+        const openModalComercio = document.getElementById('openModalComercio');
+
+        
+        openModalProducto.addEventListener('click', () => {
+            fetch('/agregarProducto')
+                .then(response => response.text())
+                .then(data => {
+                    modalContent.innerHTML = data;
+                    modal.classList.remove('hidden');
+                })
+                .catch(error => console.error('Error al cargar el formulario de producto:', error));
+        });
+
+        
+        openModalComercio.addEventListener('click', () => {
+            fetch('/agregarComercio')
+                .then(response => response.text())
+                .then(data => {
+                    modalContent.innerHTML = data;
+                    modal.classList.remove('hidden');
+                })
+                .catch(error => console.error('Error al cargar el formulario de comercio:', error));
+        });
+
+        // Cerrar modal al hacer clic fuera del contenido
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.classList.add('hidden');
+            }
+        });
+    </script>
+
+</body>
+</html>
