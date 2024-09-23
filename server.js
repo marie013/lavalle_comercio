@@ -65,7 +65,7 @@ app.post('/menu', (req, res) => {
     
     axios.post('http://localhost:3333/login', {
         email: req.body.email,
-        contraseña: req.body.contraseña
+        contrasena: req.body.contrasena
     })
     .then(response => {
         if (response.status === 200) {
@@ -128,30 +128,6 @@ app.get('/nuevo', (req,res)=>{
     res.send(salida);
 })
 
-app.post('/agregar',(req, res)=>{
-    console.log("llegó post/agregar");
-    console.log(req.body);
-    console.log(req.body.afiliado);
-    if(req.body.afiliado == undefined){
-        req.body.afiliado = false;
-    }else{
-        req.body.afiliado = true;
-    }
-    console.log(req.body);
-    console.log(req.body.afiliado);
-    
-    var archivo = fs.readFileSync('./views/menu.hbs','utf-8',(err,data)=>{
-        if(err){
-            console.log(err);         
-        }else{
-            console.log("archivo leído");
-        }
-    });
-    var template = Handlebars.compile(archivo);
-    var salida = template(objeto);
-    res.send(salida);   
-})
-
 app.get('/prueba', (req,res)=>{
     console.log("llegó un post/prueba");
     
@@ -204,6 +180,48 @@ app.get('/listarUsuarios', (req, res) => {
             res.status(500).send('Error al obtener usuarios');
         });
 });
+// Registrar usuario.
+app.get('/registrarUsuario', (req, res) => {
+    var archivo = fs.readFileSync('./views/agregarUsuario.hbs', 'utf-8', (err, data) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("archivo leído");
+        }
+    });
+    var template = Handlebars.compile(archivo);
+    var salida = template(objeto);
+    res.send(salida);
+})
+
+app.post('/registrarUsuario', (req, res) => {
+    console.log(req.body.nombre);
+    axios.post('http://localhost:3333/usuario/registrar', {
+        nombre: req.body.nombre,
+        email: req.body.email,
+        telefono: req.body.telefono,
+        contrasena: req.body.pass,
+        rol: req.body.rol
+    })
+        .then(response => {
+            if (response.status === 201) {
+                var archivo = fs.readFileSync('./views/agregarUsuario.hbs', 'utf-8', (err, data) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).send('Error al leer la plantilla');
+                    }
+                });
+                var template = Handlebars.compile(archivo);
+                var salida = template(objeto);
+                console.log("browser <-r- server 'agregarUsuario.hbs'");
+                res.send(salida);
+            } else {
+                console.log("server <-r- backend 'error en los datos ingresados'");
+            }
+        })
+})
+
+
 app.get('/agregarComercio', (req,res)=>{
     console.log("llegó un post/agregarComercio");
     
