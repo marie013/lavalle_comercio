@@ -1,25 +1,36 @@
-
 const express = require("express");
-const path = require('path')
-const Handlebars = require('handlebars');
+const path = require('path');
+const hbs = require('hbs');
+const exphbs = require('express-handlebars');
 const fs = require('fs');
 const Seguridad = require("./seguridad.js");
-
 const app = express();
-
 const Controlador = require('./controlador');
 const { default: axios } = require("axios");
+const Handlebars = require('hbs');
 
 
 app.use(express.json());
-app.use(express.urlencoded({extended : false}))
+app.use(express.urlencoded({ extended: false }));
 
 const port = 3001;
 
-app.use("/", express.static(path.join(__dirname, "/views")));
+app.set('views', [
+  path.join(__dirname, 'views')
+]);
+
+// Configurar el motor de plantillas
+app.set('view engine', 'hbs');
+
+// Registrar parciales
+hbs.registerPartials(path.join(__dirname, 'views/partials'));
+hbs.registerPartials(path.join(__dirname, 'otrosParciales'));
+
+//para servir archivos estáticos)
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Especifica la ubicación de tus archivos .hbs
-app.set("views", path.join(__dirname, "views")); // Ruta a la carpeta "views"
+app.set("views", path.join(__dirname, "views"));
 
 let _url = path.join(__dirname,'./views/');
 
