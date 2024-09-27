@@ -24,7 +24,6 @@ app.set('view engine', 'hbs');
 
 // Registrar parciales
 hbs.registerPartials(path.join(__dirname, 'views/partials'));
-hbs.registerPartials(path.join(__dirname, 'otrosParciales'));
 
 //para servir archivos estáticos)
 app.use(express.static(path.join(__dirname, 'public')));
