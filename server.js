@@ -54,20 +54,6 @@ app.get('/', (req,res)=>{
     res.send(salida);
 })
 
-app.get('/sobrenosotros', (req, res) => {
-    var archivo = fs.readFileSync('./views/sobreNosotros.hbs', 'utf-8', (err, data) => {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("archivo leído");
-        }
-    });
-    var template = Handlebars.compile(archivo);
-    var salida = template(objeto);
-    res.send(salida);
-});
-
-
 app.post('/menu', (req, res) => {
     console.log("browser --> server '/login'");
     console.log("server --> backend '/login'");
@@ -93,14 +79,26 @@ app.post('/menu', (req, res) => {
             console.log("browser <-r- server 'menu.html'");
             res.send(salida);
         } else {
-            console.log("server <-r- backend 'credenciales inválidas'");
-            res.send("<p>Error: Credenciales inválidas</p>");
+            res.status(401).send('Credenciales inválidas o falta idUsuario');
         }
     })
     .catch(error => {
         console.error('Error en el login:', error);
         res.status(500).send('Error en el login');
     });
+});
+
+app.get('/sobrenosotros', (req, res) => {
+    var archivo = fs.readFileSync('./views/sobreNosotros.hbs', 'utf-8', (err, data) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("archivo leído");
+        }
+    });
+    var template = Handlebars.compile(archivo);
+    var salida = template(objeto);
+    res.send(salida);
 });
 
 app.post('/agregarProducto', (req, res) => {
@@ -248,23 +246,26 @@ app.get('/agregarComercio', (req,res)=>{
 })
 
 app.post('/agregarComercio', (req, res) => {
-    console.log("Datos recibidos:", req.body);
-    
-    axios.post('http://localhost:3333/comercio/registrar/:id', {  
+    const idUsuario = req.session.idUsuario;  // Recupera el ID del usuario logueado
+
+    if (!idUsuario) {
+        return res.status(401).send('Usuario no autenticado');
+    }
+
+    axios.post('http://localhost:3333/comercio/registrar/${idUsuario}', {
         nombre: req.body.nombre,
         cuit: req.body.cuit,
         direccion: req.body.direccion,
-        
+        fk_idUsuario: idUsuario  // Aquí pasas el ID del usuario
     })
     .then(response => {
-        console.log("Comercio enviado al servidor externo:", response.data);
         res.status(200).send("Comercio agregado exitosamente");
     })
     .catch(error => {
-        console.error('Error al enviar comercio al servidor externo:', error);
         res.status(500).send('Error al agregar comercio');
     });
 });
+
 
 
 app.listen(port, ()=>{
