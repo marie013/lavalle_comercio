@@ -53,10 +53,8 @@ app.get('/', (req,res)=>{
     var salida = template(objeto);
     res.send(salida);
 })
-
+let idUsuario = null;
 app.post('/menu', (req, res) => {
-    console.log("browser --> server '/login'");
-    console.log("server --> backend '/login'");
     console.log("Datos recibidos del cliente:", req.body);
     
     axios.post('http://localhost:3333/login', {
@@ -65,7 +63,8 @@ app.post('/menu', (req, res) => {
     })
     .then(response => {
         if (response.status === 200) {
-            console.log("server <-r- backend 'usuario autenticado'");
+            idUsuario = response.data.idUsuario;
+            console.log("server <-r- backend 'usuario autenticado' con id: ", idUsuario);
 
             var archivo = fs.readFileSync('./views/menu.hbs', 'utf-8', (err, data) => {
                 if (err) {
@@ -246,17 +245,14 @@ app.get('/agregarComercio', (req,res)=>{
 })
 
 app.post('/agregarComercio', (req, res) => {
-    const idUsuario = req.session.idUsuario;  // Recupera el ID del usuario logueado
-
     if (!idUsuario) {
-        return res.status(401).send('Usuario no autenticado');
+        return res.status(400).send('El idUsuario no está definido');
     }
-
-    axios.post('http://localhost:3333/comercio/registrar/${idUsuario}', {
+    axios.post(`http://localhost:3333/comercio/registrar/${idUsuario}`, {
         nombre: req.body.nombre,
         cuit: req.body.cuit,
         direccion: req.body.direccion,
-        fk_idUsuario: idUsuario  // Aquí pasas el ID del usuario
+        fk_idUsuario: idUsuario  
     })
     .then(response => {
         res.status(200).send("Comercio agregado exitosamente");
@@ -265,8 +261,6 @@ app.post('/agregarComercio', (req, res) => {
         res.status(500).send('Error al agregar comercio');
     });
 });
-
-
 
 app.listen(port, ()=>{
     console.log('Escuchando en el puerto ${port}')
