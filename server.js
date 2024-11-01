@@ -30,6 +30,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Especifica la ubicación de tus archivos .hbs
 app.set("views", path.join(__dirname, "views"));
 
+// Función para renderizar la plantilla
+function renderTemplate(res, filePath, data) {
+    try {
+        const archivo = fs.readFileSync(filePath, 'utf-8');
+        const template = Handlebars.compile(archivo);
+        const salida = template(data);
+        res.send(salida);
+    } catch (err) {
+        console.error("Error al renderizar plantilla:", err);
+        res.status(500).send("Error al renderizar plantilla");
+    }
+}
+
 let _url = path.join(__dirname,'./views/');
 
 
@@ -40,17 +53,7 @@ var objeto = {url : _url};
 let destino = {url:""}
 //------------- zona de ruteo ------------------
 app.get('/', (req,res)=>{
-
-     var archivo = fs.readFileSync('./views/index.hbs','utf-8',(err,data)=>{
-        if(err){
-            console.log(err);         
-        }else{
-            console.log("archivo leído");
-        }
-    });
-    var template = Handlebars.compile(archivo);
-    var salida = template(objeto);
-    res.send(salida);
+    renderTemplate(res, "./views/index.hbs", {});
 })
 
 app.post("/menu", (req, res) => {
@@ -84,30 +87,10 @@ app.post("/menu", (req, res) => {
 });
 
 app.get('/sobrenosotros', (req, res) => {
-    var archivo = fs.readFileSync('./views/sobreNosotros.hbs', 'utf-8', (err, data) => {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("archivo leído");
-        }
-    });
-    var template = Handlebars.compile(archivo);
-    var salida = template(objeto);
-    res.send(salida);
+    renderTemplate(res, "./views/sobreNosotros.hbs", {});
 });
 app.get('/agregarProducto', (req, res) => {console.log("llegó un post/agregarProducto");
-
-    var archivo = fs.readFileSync('./views/agregarProducto.hbs', 'utf-8', (err, data) => {
-        if (err) {
-            console.log(err);
-            res.status(500).send('Error al leer la plantilla');
-        } else {
-            console.log("archivo de agregarProducto leído");
-        }
-    });
-    var template = Handlebars.compile(archivo);
-    var salida = template(objeto);  
-    res.send(salida);
+    renderTemplate(res, "./views/agregarProducto.hbs", {});
 });
 app.post('/agregarProducto', (req, res) => {
     console.log("Datos recibidos:", req.body);
@@ -156,14 +139,7 @@ app.get('/listarUsuarios', (req, res) => {
         .then(response => {
             const usuariosRegistrados = response.data.usuariosRegistrados;
             console.log("Usuarios recibidos", usuariosRegistrados);
-            var archivo = fs.readFileSync('./views/listarUsuarios.hbs', 'utf-8', (err, data) => {
-                if (err) {
-                    console.log(err);
-                    res.status(500).send('Error al leer la plantilla');
-                } else {
-                    console.log("archivo leído");
-                }
-            }); 
+            renderTemplate(res, "./views/listarUsuarios.hbs", {});
             var template = Handlebars.compile(archivo);
             var salida = template({usuarios: usuariosRegistrados});
             console.log("Datos enviados al template: ", {usuarios: usuariosRegistrados});
@@ -176,16 +152,7 @@ app.get('/listarUsuarios', (req, res) => {
 });
 // Registrar usuario.
 app.get('/registrarUsuario', (req, res) => {
-    var archivo = fs.readFileSync('./views/agregarUsuario.hbs', 'utf-8', (err, data) => {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("archivo leído");
-        }
-    });
-    var template = Handlebars.compile(archivo);
-    var salida = template(objeto);
-    res.send(salida);
+    renderTemplate(res, "./views/agregarUsuario.hbs", {});
 })
 
 app.post('/registrarUsuario', (req, res) => {
@@ -199,16 +166,7 @@ app.post('/registrarUsuario', (req, res) => {
     })
         .then(response => {
             if (response.status === 201) {
-                var archivo = fs.readFileSync('./views/agregarUsuario.hbs', 'utf-8', (err, data) => {
-                    if (err) {
-                        console.log(err);
-                        res.status(500).send('Error al leer la plantilla');
-                    }
-                });
-                var template = Handlebars.compile(archivo);
-                var salida = template(objeto);
-                console.log("browser <-r- server 'agregarUsuario.hbs'");
-                res.send(salida);
+                renderTemplate(res, "./views/agregarUsuario.hbs", {});
             } else {
                 console.log("server <-r- backend 'error en los datos ingresados'");
             }
@@ -218,17 +176,7 @@ app.post('/registrarUsuario', (req, res) => {
 
 app.get('/agregarComercio', (req,res)=>{
     console.log("llegó un post/agregarComercio");
-    
-    var archivo = fs.readFileSync('./views/agregarComercio.hbs','utf-8',(err,data)=>{
-        if(err){
-            console.log(err);         
-        }else{
-            console.log("archivo leído");
-        }
-    });
-    var template = Handlebars.compile(archivo);
-    var salida = template(objeto);
-    res.send(salida);
+    renderTemplate(res, "./views/agregarComercio.hbs", {});
 })
 
 app.post("/agregarComercio", (req, res) => {
