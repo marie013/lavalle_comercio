@@ -1,17 +1,16 @@
 const express = require("express");
 const path = require('path');
 const hbs = require('hbs');
-const exphbs = require('express-handlebars');
 const fs = require('fs');
-const Seguridad = require("./seguridad.js");
 const app = express();
-const Controlador = require('./controlador');
 const { default: axios } = require("axios");
 const Handlebars = require('hbs');
+const cookieParser = require("cookie-parser");
 
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 const port = 3001;
 
@@ -53,37 +52,34 @@ app.get('/', (req,res)=>{
     var salida = template(objeto);
     res.send(salida);
 })
-let idUsuario = null;
-app.post('/menu', (req, res) => {
+
+app.post("/menu", (req, res) => {
     console.log("Datos recibidos del cliente:", req.body);
     
-    axios.post('http://localhost:3333/login', {
+    axios.post("http://localhost:3333/login", {
         email: req.body.email,
         contrasena: req.body.contrasena
     })
     .then(response => {
         if (response.status === 200) {
-            idUsuario = response.data.idUsuario;
-            console.log("server <-r- backend 'usuario autenticado' con id: ", idUsuario);
+            const idUsuario = response.data.id_usuario;
+            console.log("Usuario autenticado con id:", idUsuario);
 
-            var archivo = fs.readFileSync('./views/menu.hbs', 'utf-8', (err, data) => {
-                if (err) {
-                    console.log(err);
-                    res.status(500).send('Error al leer la plantilla');
-                }
-            });
+            // Establecer la cookie idUsuario con un tiempo de expiración de 1 día
+            res.cookie("idUsuario", idUsuario, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
 
-            var template = Handlebars.compile(archivo);
-            var salida = template(objeto);
-            console.log("browser <-r- server 'menu.html'");
+            var archivo = fs.readFileSync("./views/menu.hbs", "utf-8");
+            var template = hbs.handlebars.compile(archivo);
+            var salida = template({});
+
             res.send(salida);
         } else {
-            res.status(401).send('Credenciales inválidas o falta idUsuario');
+            res.status(401).send("Credenciales inválidas o falta idUsuario");
         }
     })
     .catch(error => {
-        console.error('Error en el login:', error);
-        res.status(500).send('Error en el login');
+        console.error("Error en el login:", error);
+        res.status(500).send("Error en el login");
     });
 });
 
@@ -99,16 +95,33 @@ app.get('/sobrenosotros', (req, res) => {
     var salida = template(objeto);
     res.send(salida);
 });
+app.get('/agregarProducto', (req, res) => {console.log("llegó un post/agregarProducto");
 
+    var archivo = fs.readFileSync('./views/agregarProducto.hbs', 'utf-8', (err, data) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Error al leer la plantilla');
+        } else {
+            console.log("archivo de agregarProducto leído");
+        }
+    });
+    var template = Handlebars.compile(archivo);
+    var salida = template(objeto);  
+    res.send(salida);
+});
 app.post('/agregarProducto', (req, res) => {
     console.log("Datos recibidos:", req.body);
-    
-    axios.post('http://localhost:3333/producto/registrar', {
-        nombre_producto: req.body.nombre_producto,
+    const id_comercio = req.cookies.id_comercio;
+    axios.post(`http://localhost:3333/producto/registrar/${id_comercio}`, {
+        nombre_producto: req.body.nombre_producto, 
         precio: req.body.precio,
-        detalle_producto: req.body.detalle_producto,
+        detalles: req.body.detalle_producto,
         categoria: req.body.categoria,
-        // imagenes --> `multipart/form-data`
+        disponibilidad: req.body.disponibilidad,
+        imgProducto: req.body.imgProducto,
+        oferta: req.body.oferta,
+        descuento: req.body.descuento,
+        fk_id_comercio: id_comercio
     })
     .then(response => {
         console.log("Producto enviado al servidor externo:", response.data);
@@ -120,20 +133,6 @@ app.post('/agregarProducto', (req, res) => {
     });
 });
 
-app.get('/nuevo', (req,res)=>{
-    console.log("llegó un post/nuevo");
-    
-    var archivo = fs.readFileSync('./views/nuevo.hbs','utf-8',(err,data)=>{
-        if(err){
-            console.log(err);         
-        }else{
-            console.log("archivo leído");
-        }
-    });
-    var template = Handlebars.compile(archivo);
-    var salida = template(objeto);
-    res.send(salida);
-})
 
 app.get('/prueba', (req,res)=>{
     console.log("llegó un post/prueba");
@@ -150,22 +149,10 @@ app.get('/prueba', (req,res)=>{
     res.send(salida);
 })
 
-app.get('/agregarProducto', (req, res) => {
-    var archivo = fs.readFileSync('./views/agregarProducto.hbs', 'utf-8', (err, data) => {
-        if (err) {
-            console.log(err);
-            res.status(500).send('Error al leer la plantilla');
-        } else {
-            console.log("archivo de agregarProducto leído");
-        }
-    });
-    var template = Handlebars.compile(archivo);
-    var salida = template(objeto);  
-    res.send(salida);
-});
+
 
 app.get('/listarUsuarios', (req, res) => {
-    axios.get('http://localhost:3333/usuario/all')
+    axios.get('http://localhost:3333/usuario')
         .then(response => {
             const usuariosRegistrados = response.data.usuariosRegistrados;
             console.log("Usuarios recibidos", usuariosRegistrados);
@@ -244,23 +231,38 @@ app.get('/agregarComercio', (req,res)=>{
     res.send(salida);
 })
 
-app.post('/agregarComercio', (req, res) => {
+app.post("/agregarComercio", (req, res) => {
+    const idUsuario = req.cookies.idUsuario; 
+
     if (!idUsuario) {
-        return res.status(400).send('El idUsuario no está definido');
+        return res.status(400).send("El idUsuario no está definido");
     }
+
     axios.post(`http://localhost:3333/comercio/registrar/${idUsuario}`, {
         nombre: req.body.nombre,
         cuit: req.body.cuit,
         direccion: req.body.direccion,
-        fk_idUsuario: idUsuario  
+        fk_idUsuario: idUsuario
     })
     .then(response => {
-        res.status(200).send("Comercio agregado exitosamente");
+        const id_comercio = response.data.idComercio;
+        console.log("Comercio registrado con id:", id_comercio);
+
+        // Establecer la cookie id_comercio con un tiempo de expiración de 1 día
+        res.cookie("id_comercio", id_comercio, {httpOnly: true });
+
+        res.send(`
+            <script>
+                console.log('id_comercio almacenado en cookies');
+            </script>
+        `);
     })
     .catch(error => {
-        res.status(500).send('Error al agregar comercio');
+        console.error("Error al agregar comercio:", error);
+        res.status(500).send("Error al agregar comercio");
     });
 });
+
 
 app.listen(port, ()=>{
     console.log('Escuchando en el puerto ${port}')
