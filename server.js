@@ -6,7 +6,7 @@ const fs = require('fs');
 const axios = require("axios");
 
 const app = express();
-const port = 3002;
+const port = 3001;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -43,7 +43,7 @@ app.post('/eliminarUsuario', logueado, admin, usuarioRoutes.eliminarUsuario);
 app.get('/agregarComercio', logueado, comercioRoutes.formAgregarComercio);
 app.post('/agregarComercio', logueado, comercioRoutes.agregarComercio);
  
-app.get('/logout', usuarioRoutes.logount);
+app.get('/logout', usuarioRoutes.logout);
 
 app.listen(port, () => {
     console.log(`Servidor escuchando en el puerto ${port}`);

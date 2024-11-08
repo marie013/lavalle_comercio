@@ -115,7 +115,7 @@ const eliminarUsuario = (req, res) => {
         });
 };
 // cerrar sesion
-const logount = (req, res) => {
+const logout = (req, res) => {
     res.clearCookie("idUsuario");
     res.clearCookie("rol");
     res.redirect("/");
@@ -131,5 +131,5 @@ module.exports = {
     formRegistrarUsuario,
     registrarUsuario,
     eliminarUsuario,
-    logount
+    logout
 };
