@@ -1,217 +1,50 @@
 const express = require("express");
 const path = require('path');
 const hbs = require('hbs');
+const methodOverride = require("method-override");
 const fs = require('fs');
-const app = express();
-const { default: axios } = require("axios");
-const Handlebars = require('hbs');
-const cookieParser = require("cookie-parser");
+const axios = require("axios");
 
+const app = express();
+const port = 3002;
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-
-const port = 3001;
-
-app.set('views', [
-  path.join(__dirname, 'views')
-]);
-
-// Configurar el motor de plantillas
+app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 app.set('view engine', 'hbs');
-
-// Registrar parciales
+app.set('views', path.join(__dirname, 'views'));
 hbs.registerPartials(path.join(__dirname, 'views/partials'));
-
-//para servir archivos estáticos)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Especifica la ubicación de tus archivos .hbs
-app.set("views", path.join(__dirname, "views"));
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
 
-// Función para renderizar la plantilla
-function renderTemplate(res, filePath, data) {
-    try {
-        const archivo = fs.readFileSync(filePath, 'utf-8');
-        const template = Handlebars.compile(archivo);
-        const salida = template(data);
-        res.send(salida);
-    } catch (err) {
-        console.error("Error al renderizar plantilla:", err);
-        res.status(500).send("Error al renderizar plantilla");
-    }
-}
+const { admin } = require('./middlewares/authenticaded');
+const { logueado } = require('./middlewares/authenticaded');
+const usuarioRoutes = require('./Routes/Usuario_R');
+const comercioRoutes = require('./Routes/Comercio_R');
 
-let _url = path.join(__dirname,'./views/');
+app.get('/', usuarioRoutes.inicio);
 
 
-_url = "http://localhost:"+port;
+// Rutas relacionadas a usuarios
+app.post('/menu', usuarioRoutes.menu);
+app.get('/registrarUsuario', logueado, usuarioRoutes.formRegistrarUsuario);
+app.post('/registrarUsuario', logueado, usuarioRoutes.registrarUsuario);
+app.get('/sobreNosotros', logueado, usuarioRoutes.sobreNosotros );
 
-//var objeto = {url : _url+"/login"};
-var objeto = {url : _url};
-let destino = {url:""}
-//------------- zona de ruteo ------------------
-app.get('/', (req,res)=>{
-    renderTemplate(res, "./views/index.hbs", {});
-})
+// administrador
+app.get('/listarUsuarios', logueado, admin, usuarioRoutes.listarUsuarios);
+app.get('/registrarAdministrador', logueado, admin, usuarioRoutes.formRegistrarAdministrador);
+app.post('/registrarAdministrador', logueado, admin, usuarioRoutes.registrarAdministrador);
+app.post('/eliminarUsuario', logueado, admin, usuarioRoutes.eliminarUsuario);
 
-app.post("/menu", (req, res) => {
-    console.log("Datos recibidos del cliente:", req.body);
-    
-    axios.post("http://localhost:3333/login", {
-        email: req.body.email,
-        contrasena: req.body.contrasena
-    })
-    .then(response => {
-        if (response.status === 200) {
-            const idUsuario = response.data.id_usuario;
-            console.log("Usuario autenticado con id:", idUsuario);
+// comercio
+app.get('/agregarComercio', logueado, comercioRoutes.formAgregarComercio);
+app.post('/agregarComercio', logueado, comercioRoutes.agregarComercio);
+ 
+app.get('/logout', usuarioRoutes.logount);
 
-            // Establecer la cookie idUsuario con un tiempo de expiración de 1 día
-            res.cookie("idUsuario", idUsuario, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
-
-            var archivo = fs.readFileSync("./views/menu.hbs", "utf-8");
-            var template = hbs.handlebars.compile(archivo);
-            var salida = template({});
-
-            res.send(salida);
-        } else {
-            res.status(401).send("Credenciales inválidas o falta idUsuario");
-        }
-    })
-    .catch(error => {
-        console.error("Error en el login:", error);
-        res.status(500).send("Error en el login");
-    });
-});
-
-app.get('/sobrenosotros', (req, res) => {
-    renderTemplate(res, "./views/sobreNosotros.hbs", {});
-});
-app.get('/agregarProducto', (req, res) => {console.log("llegó un post/agregarProducto");
-    renderTemplate(res, "./views/agregarProducto.hbs", {});
-});
-app.post('/agregarProducto', (req, res) => {
-    console.log("Datos recibidos:", req.body);
-    const id_comercio = req.cookies.id_comercio;
-    axios.post(`http://localhost:3333/producto/registrar/${id_comercio}`, {
-        nombre_producto: req.body.nombre_producto, 
-        precio: req.body.precio,
-        detalles: req.body.detalle_producto,
-        categoria: req.body.categoria,
-        disponibilidad: req.body.disponibilidad,
-        imgProducto: req.body.imgProducto,
-        oferta: req.body.oferta,
-        descuento: req.body.descuento,
-        fk_id_comercio: id_comercio
-    })
-    .then(response => {
-        console.log("Producto enviado al servidor externo:", response.data);
-        res.status(200).send("Producto agregado exitosamente");
-    })
-    .catch(error => {
-        console.error('Error al enviar producto al servidor externo:', error);
-        res.status(500).send('Error al agregar producto');
-    });
-});
-
-
-app.get('/prueba', (req,res)=>{
-    console.log("llegó un post/prueba");
-    
-    var archivo = fs.readFileSync('./views/prueba.hbs','utf-8',(err,data)=>{
-        if(err){
-            console.log(err);         
-        }else{
-            console.log("archivo leído");
-        }
-    });
-    var template = Handlebars.compile(archivo);
-    var salida = template(objeto);
-    res.send(salida);
-})
-
-
-
-app.get('/listarUsuarios', (req, res) => {
-    axios.get('http://localhost:3333/usuario')
-        .then(response => {
-            const usuariosRegistrados = response.data.usuariosRegistrados;
-            console.log("Usuarios recibidos", usuariosRegistrados);
-            renderTemplate(res, "./views/listarUsuarios.hbs", {});
-            var template = Handlebars.compile(archivo);
-            var salida = template({usuarios: usuariosRegistrados});
-            console.log("Datos enviados al template: ", {usuarios: usuariosRegistrados});
-            res.send(salida);
-        })
-        .catch(error => {
-            console.error('Error al obtener usuarios:', error);
-            res.status(500).send('Error al obtener usuarios');
-        });
-});
-// Registrar usuario.
-app.get('/registrarUsuario', (req, res) => {
-    renderTemplate(res, "./views/agregarUsuario.hbs", {});
-})
-
-app.post('/registrarUsuario', (req, res) => {
-    console.log(req.body.nombre);
-    axios.post('http://localhost:3333/usuario/registrar', {
-        nombre: req.body.nombre,
-        email: req.body.email,
-        telefono: req.body.telefono,
-        contrasena: req.body.pass,
-        rol: req.body.rol
-    })
-        .then(response => {
-            if (response.status === 201) {
-                renderTemplate(res, "./views/agregarUsuario.hbs", {});
-            } else {
-                console.log("server <-r- backend 'error en los datos ingresados'");
-            }
-        })
-})
-
-
-app.get('/agregarComercio', (req,res)=>{
-    console.log("llegó un post/agregarComercio");
-    renderTemplate(res, "./views/agregarComercio.hbs", {});
-})
-
-app.post("/agregarComercio", (req, res) => {
-    const idUsuario = req.cookies.idUsuario; 
-
-    if (!idUsuario) {
-        return res.status(400).send("El idUsuario no está definido");
-    }
-
-    axios.post(`http://localhost:3333/comercio/registrar/${idUsuario}`, {
-        nombre: req.body.nombre,
-        cuit: req.body.cuit,
-        direccion: req.body.direccion,
-        fk_idUsuario: idUsuario
-    })
-    .then(response => {
-        const id_comercio = response.data.idComercio;
-        console.log("Comercio registrado con id:", id_comercio);
-
-        // Establecer la cookie id_comercio con un tiempo de expiración de 1 día
-        res.cookie("id_comercio", id_comercio, {httpOnly: true });
-
-        res.send(`
-            <script>
-                console.log('id_comercio almacenado en cookies');
-            </script>
-        `);
-    })
-    .catch(error => {
-        console.error("Error al agregar comercio:", error);
-        res.status(500).send("Error al agregar comercio");
-    });
-});
-
-
-app.listen(port, ()=>{
-    console.log('Escuchando en el puerto ${port}')
+app.listen(port, () => {
+    console.log(`Servidor escuchando en el puerto ${port}`);
 });

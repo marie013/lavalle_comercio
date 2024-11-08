@@ -1,0 +1,87 @@
+{{!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Registrar categoria
+    </title>
+</head>
+
+<body>
+    <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+        <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+            {{!-- imagen --}}
+            <img class="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=amber&shade=600"
+                alt="lavalle ofertas">
+            <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"> Registrar categoria
+            </h2>
+        </div>
+
+        <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+            <form class="space-y-6" action="{{url}}/registrarCategoria" method="POST">
+                <div>
+                    <label for="text" class="block text-sm font-medium leading-6 text-gray-900">Nombre categoria</label>
+                    <div class="mt-2">
+                        <input id="nombreCategoria" name="nombreCategoria" type="text" required
+                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    </div>
+                </div>
+                <div>
+                    <button type="submit"
+                        class="flex w-full justify-center rounded-md bg-yellow-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600">Registrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="https://cdn.tailwindcss.com"></script>
+</body>
+
+</html> --}}
+
+<div class="flex items-center justify-center min-h-screen bg-gradient-to-b from-teal-500 to-blue-300">
+  <div class="w-full max-w-md bg-white shadow-lg rounded-2xl p-6 mx-4">
+    <div class="flex justify-center mb-6">
+      <div class="bg-teal-500 p-4 rounded-full">
+        <!-- Icono del libro -->
+        <svg class="w-8 h-8 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M6 2C4.895 2 4 2.895 4 4V20C4 21.105 4.895 22 6 22H18C19.105 22 20 21.105 20 20V4C20 2.895 19.105 2 18 2H6ZM7 4H17V20H7V4Z" />
+        </svg>
+      </div>
+    </div>
+    <h2 class="text-center text-2xl font-semibold text-teal-700 mb-6">Book Store</h2>
+
+    <!-- Formulario -->
+    <form action="#" method="POST" class="space-y-4">
+      <div>
+        <input type="text" placeholder="Enter username/email"
+               class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500">
+      </div>
+      <div class="relative">
+        <input type="password" placeholder="Enter password"
+               class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500">
+        <span class="absolute inset-y-0 right-0 flex items-center pr-3">
+          <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 4C8.686 4 6 6.686 6 10C6 13.314 8.686 16 12 16C15.314 16 18 13.314 18 10C18 6.686 15.314 4 12 4ZM2 10C2 5.582 5.582 2 10 2C11.886 2 13.656 2.733 15 3.936C15.18 4.105 15.372 4.263 15.564 4.42L17.121 3.121L16.313 2.313L14.666 3.666C13.156 2.485 11.104 2 9 2C4.029 2 0 6.029 0 11C0 12.292 0.21 13.501 0.584 14.584L2 10Z" />
+          </svg>
+        </span>
+      </div>
+
+      <!-- Botón de enviar -->
+      <div class="flex justify-center mt-4">
+        <button type="submit" class="flex items-center justify-center w-10 h-10 bg-teal-500 text-white rounded-full shadow-md hover:bg-teal-600 focus:outline-none">
+          <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M10 17L15 12L10 7V17Z" />
+          </svg>
+        </button>
+      </div>
+    </form>
+
+    <!-- Texto y botón de registro -->
+    <div class="text-center mt-4 text-gray-500">
+      <p>Don't have an account?</p>
+      <a href="#" class="block mt-2 bg-teal-500 text-white py-2 rounded-full hover:bg-teal-600">Sign Up</a>
+    </div>
+  </div>
+</div>

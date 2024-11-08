@@ -1,0 +1,121 @@
+<nav class="bg-amber-600">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+        <div class="relative flex h-16 items-center justify-between">
+            <!-- Botón de menú hamburguesa para pantallas pequeñas -->
+            <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                <button type="button"
+                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-300 hover:text-white hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                    aria-controls="mobile-menu" aria-expanded="false"
+                    onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                    <span class="sr-only">Open main menu</span>
+                    <!-- Icono hamburguesa -->
+                    <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16m-7 6h7" />
+                    </svg>
+                    <!-- Icono de cerrar (X) -->
+                    <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                <div class="flex flex-shrink-0 items-center">
+                    <!-- imagen/logo -->
+                    <img class="h-8 w-auto"
+                        src="https://drive.google.com/thumbnail?id=1sOy54c0Ps_Fs4abHbqyJupLw0IB1c9mE"
+                        alt="Your Company">
+                </div>
+                <div class="hidden sm:ml-6 sm:block">
+                    <div class="flex space-x-4">
+                        <a href="#" class="rounded-md bg-amber-800 px-3 py-2 text-sm font-medium text-white"
+                            aria-current="page">Usuarios</a>
+
+                        <!-- Menú desplegable de Productos -->
+                        <div class="relative group">
+                            <a href="#"
+                                class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
+                                Productos
+                            </a>
+                            <!-- Submenú -->
+                            <div class="absolute hidden group-hover:block bg-amber-600 rounded-md mt-1 shadow-lg z-10">
+                                <a href="{{url}}/registrarProducto"
+                                    class="block px-4 py-2 text-sm text-white hover:bg-amber-800">Registrar</a>
+                                <a href="{{url}}/modificarProducto"
+                                    class="block px-4 py-2 text-sm text-white hover:bg-amber-800">Modificar</a>
+                                <a href="{{url}}/verProducto"
+                                    class="block px-4 py-2 text-sm text-white hover:bg-amber-800">Ver</a>
+                            </div>
+                        </div>
+                        <div class="relative group">
+                            <a href="#"
+                                class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
+                                Comercios
+                            </a>
+                            <!-- Comercio-->
+                            <div class="absolute hidden group-hover:block bg-amber-600 rounded-md mt-1 shadow-lg z-10">
+                                <a href="{{url}}/#"
+                                    class="block px-4 py-2 text-sm text-white hover:bg-amber-800">Registrar</a>
+                                <a href="{{url}}/#"
+                                    class="block px-4 py-2 text-sm text-white hover:bg-amber-800">Modificar</a>
+                                <a href="{{url}}/#"
+                                    class="block px-4 py-2 text-sm text-white hover:bg-amber-800">Ver</a>
+                            </div>
+                        </div>
+                        
+                        <a href="{{url}}/sobreNosotros"
+                            class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Sobre
+                            nosotros</a>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                <!-- Profile dropdown -->
+                <div class="relative ml-3">
+                    <div>
+                        <!-- icono de usuario -->
+                        <a href="../menu"
+                            class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                            <span class="sr-only">Open user menu</span>
+                            <img class="h-8 w-8 rounded-full"
+                                src="https://cdn.icon-icons.com/icons2/827/PNG/512/user_icon-icons.com_66546.png"
+                                alt="">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menú móvil -->
+    <div class="sm:hidden hidden" id="mobile-menu">
+        <div class="px-2 pt-2 pb-3 space-y-1">
+            <a href="#" class="block rounded-md bg-amber-800 px-3 py-2 text-base font-medium text-white"
+                aria-current="page">Usuarios</a>
+
+            <!-- Submenú móvil para Productos -->
+            <div class="block">
+                <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300">Productos</a>
+                <div class="pl-4 space-y-1">
+                    <a href="{{url}}/registrarProducto"
+                        class="block px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Registrar</a>
+                    <a href="{{url}}/modificarProducto"
+                        class="block px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Modificar</a>
+                    <a href="{{url}}/verProducto"
+                        class="block px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Ver</a>
+                </div>
+            </div>
+
+            <a href="{{url}}/agregarComercio"
+                class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Comercios</a>
+            <a href="{{url}}/sobreNosotros"
+                class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Sobre
+                nosotros</a>
+        </div>
+    </div>
+</nav>
