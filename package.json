@@ -18,9 +18,11 @@
   "homepage": "https://github.com/EnzoVonkunoschy/p2_2023_repo#readme",
   "dependencies": {
     "axios": "^1.7.4",
+    "cookie-parser": "^1.4.7",
     "express": "^4.19.2",
     "express-handlebars": "^7.1.3",
     "hbs": "^4.2.0",
+    "method-override": "^3.0.0",
     "nodemon": "^3.1.0",
     "uuid": "^9.0.1"
   }
