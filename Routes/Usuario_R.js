@@ -18,8 +18,8 @@ const menu = (req, res) => {
     })
         .then(response => {
             if (response.status === 200) {
-                const idUsuario = response.data.idUsuario;
-                const rol = response.data.rol;
+                const idUsuario = response.data.usuarioAutorizado.id_usuario;
+                const rol = response.data.usuarioAutorizado.rol;
                 console.log("Usuario autenticado con id:", idUsuario, "--rol:  ", rol);
 
                 // Establecer la cookie idUsuario con un tiempo de expiración de 1 día
