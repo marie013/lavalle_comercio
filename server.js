@@ -31,18 +31,21 @@ app.get('/', usuarioRoutes.inicio);
 app.post('/menu', usuarioRoutes.menu);
 app.get('/registrarUsuario', logueado, usuarioRoutes.formRegistrarUsuario);
 app.post('/registrarUsuario', logueado, usuarioRoutes.registrarUsuario);
-app.get('/sobreNosotros', logueado, usuarioRoutes.sobreNosotros );
+app.get('/sobreNosotros', logueado, usuarioRoutes.sobreNosotros);
 
 // administrador
 app.get('/listarUsuarios', logueado, admin, usuarioRoutes.listarUsuarios);
 app.get('/registrarAdministrador', logueado, admin, usuarioRoutes.formRegistrarAdministrador);
 app.post('/registrarAdministrador', logueado, admin, usuarioRoutes.registrarAdministrador);
-app.post('/eliminarUsuario', logueado, admin, usuarioRoutes.eliminarUsuario);
+app.delete('/eliminarUsuario/:idUsuario', logueado, admin, usuarioRoutes.eliminarUsuario);
+app.get('/editarUsuario/:id_usuario', logueado, admin, usuarioRoutes.formModificarUsuario);
+app.post('/usuario/editar/:id', logueado, admin, usuarioRoutes.modificarUsuario);
+
 
 // comercio
 app.get('/agregarComercio', logueado, comercioRoutes.formAgregarComercio);
 app.post('/agregarComercio', logueado, comercioRoutes.agregarComercio);
- 
+
 app.get('/logout', usuarioRoutes.logout);
 
 app.listen(port, () => {

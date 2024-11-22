@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { response } = require('express');
 const fs = require('fs');
 const Handlebars = require('hbs');
 
@@ -6,7 +7,7 @@ const inicio = (req, res) => {
     res.render("./index", {});
 }
 // _____________sobre nosotros----------
-const sobreNosotros =(req, res)=>{
+const sobreNosotros = (req, res) => {
     res.render('./sobreNosotros', {});
 }
 
@@ -102,18 +103,71 @@ const registrarAdministrador = (req, res) => {
             }
         })
 }
-// eliminar usuarios
+// Eliminar usuario/administrador
 const eliminarUsuario = (req, res) => {
-    const idUsuario = req.body.idUsuario;
+    const idUsuario = req.params.idUsuario; // Obtener ID desde la ruta
+    console.log("ID del usuario a eliminar:", idUsuario);
+
     axios.delete(`http://localhost:3333/usuario/${idUsuario}`)
         .then(() => {
-            res.redirect("/listarUsuarios");
+            console.log("Usuario eliminado correctamente");
+            res.redirect('/listarUsuarios');
         })
-        .catch(error => {
-            console.error("Error al eliminar el usuario:", error);
-            res.status(500).send("Error al eliminar el usuario");
+        .catch((error) => {
+            console.error("Error al eliminar el usuario:", error.response ? error.response.data : error.message);
+            res.status(500).render('administrador/listarUsuarios', {
+                error: "No se pudo eliminar el usuario. Intenta nuevamente.",
+            });
         });
 };
+// modificar usuario
+
+// Ruta para obtener los datos del usuario por id y mostrar el formulario de edición
+const formModificarUsuario = (req, res) => {
+    const idUsuarioAModificar = req.params.id_usuario;
+    console.log(idUsuarioAModificar);
+
+    res.cookie("idCambio", idUsuarioAModificar, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
+
+    // Solicitar los datos del usuario desde el servidor
+    axios.get(`http://localhost:3333/usuario/${idUsuarioAModificar}`, { withCredentials: true })
+        .then(response => {
+            const usuario = response.data.user;
+            res.render("administrador/editarUsuario", { usuario: usuario });
+        })
+        .catch(error => {
+            console.error("Error al obtener el usuario:", error);
+            res.status(500).send("Error al obtener el usuario");
+        });
+};
+
+// Función para manejar la modificación del usuario
+const modificarUsuario = async (req, res) => {
+    const id_usuario = req.params.id;
+    const { nombre, email, telefono, rol } = req.body;
+
+    const usuarioModificado = {
+        nombre: req.body.nombre,
+        email: req.body.email,
+        telefono: req.body.telefono,
+        rol: rol === "true" ? true : false
+    };
+    console.log(usuarioModificado);
+
+    axios.put(`http://localhost:3333/usuario/editar/${id_usuario}`, usuarioModificado )
+        .then(response => {
+            if (response.status === 200) {
+                res.redirect("/listarUsuarios"); // Redirigir a la lista de usuarios después de la actualización
+            } else {
+                res.status(500).send("Error al actualizar el usuario");
+            }
+        })
+        .catch(error => {
+            console.error('Error al actualizar el usuario:', error);
+            res.status(500).send('Error al actualizar el usuario');
+        });
+}
+
 // cerrar sesion
 const logout = (req, res) => {
     res.clearCookie("idUsuario");
@@ -126,8 +180,11 @@ module.exports = {
     menu,
     sobreNosotros,
     formRegistrarAdministrador,
+    formModificarUsuario,
+    modificarUsuario,
     registrarAdministrador,
     listarUsuarios,
+    // obtenerUsuario,
     formRegistrarUsuario,
     registrarUsuario,
     eliminarUsuario,
