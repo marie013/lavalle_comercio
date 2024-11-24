@@ -39,6 +39,15 @@ app.get('/listarUsuarios', logueado, admin, usuarioRoutes.listarUsuarios);
 app.get('/registrarAdministrador', logueado, admin, usuarioRoutes.formRegistrarAdministrador);
 app.post('/registrarAdministrador', logueado, admin, usuarioRoutes.registrarAdministrador);
 app.post('/eliminarUsuario', logueado, admin, usuarioRoutes.eliminarUsuario);
+
+// categorias(solo accede el administrador)
+app.get('/listarCategorias', logueado, admin, categoriaRoutes.listarCategorias);
+app.get('/registrarCategoria', logueado, admin, categoriaRoutes.formAgregarCategoria);
+app.post('/registrarCategoria', logueado, admin, categoriaRoutes.agregarCategoria);
+app.delete('/eliminarCategoria/:idCategoria', logueado, admin, categoriaRoutes.eliminarCategoria);
+app.get('/editarCategoria/:idCategoria', logueado, admin, categoriaRoutes.formModificarCategoria);
+app.post('/categoria/editar/:idCategoria', logueado, admin, categoriaRoutes.modificarCategoria);
+
 //producto 
 app.get('/agregarProducto', logueado, productoRoutes.formAgregarProducto)
 app.post('/agregarProducto', logueado, upload.single('imgProducto'), productoRoutes.agregarProducto)
