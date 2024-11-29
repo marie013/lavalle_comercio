@@ -30,9 +30,11 @@ app.get('/', usuarioRoutes.inicio);
 
 // Rutas relacionadas a usuarios
 app.post('/menu', usuarioRoutes.menu);
+app.get('/menu', logueado, usuarioRoutes.home);
 app.get('/registrarUsuario', logueado, usuarioRoutes.formRegistrarUsuario);
 app.post('/registrarUsuario', logueado, usuarioRoutes.registrarUsuario);
 app.get('/sobreNosotros', logueado, usuarioRoutes.sobreNosotros );
+app.get("/perfil", logueado, usuarioRoutes.perfil);
 
 // administrador
 app.get('/listarUsuarios', logueado, admin, usuarioRoutes.listarUsuarios);
