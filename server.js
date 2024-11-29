@@ -25,6 +25,7 @@ const { logueado } = require('./middlewares/authenticaded');
 const usuarioRoutes = require('./Routes/Usuario_R');
 const comercioRoutes = require('./Routes/Comercio_R');
 const productoRoutes = require('./Routes/Producto_R')
+const categoriaRoutes = require('./Routes/Categoria_R')
 app.get('/', usuarioRoutes.inicio);
 
 
