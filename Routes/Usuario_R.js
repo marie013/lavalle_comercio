@@ -112,8 +112,8 @@ const home = (req, res) => {
 }
 //registrar administrador
 const formRegistrarAdministrador = (req, res) => {
-    res.render("./agregarAdmi", {});
-}
+    res.render("administrador/agregarAdmi", {});
+} 
 const registrarAdministrador = (req, res) => {
     console.log(req.body.nombre);
     axios.post('http://localhost:3333/usuario/registrar', {
@@ -157,13 +157,14 @@ const eliminarUsuario = (req, res) => {
 // Ruta para obtener los datos del usuario por id y mostrar el formulario de edición
 const formModificarUsuario = (req, res) => {
     const idUsuarioAModificar = req.params.id_usuario;
-    console.log(idUsuarioAModificar);
+    console.log("el id a modificar es: ", idUsuarioAModificar);
 
-    res.cookie("idCambio", idUsuarioAModificar, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
+    // res.cookie("idCambio", idUsuarioAModificar, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
 
     // Solicitar los datos del usuario desde el servidor
     axios.get(`http://localhost:3333/usuario/${idUsuarioAModificar}`, { withCredentials: true })
         .then(response => {
+            console.log(response.data.user)
             const usuario = response.data.user;
             res.render("administrador/editarUsuario", { usuario: usuario });
         })
