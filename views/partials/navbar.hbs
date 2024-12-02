@@ -1,84 +1,127 @@
 <nav class="bg-zinc-800">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-        <div class="relative flex h-16 items-center justify-between">
-            <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div class="flex flex-shrink-0 items-center">
-                    <!-- Imagen/logo -->
-                    <img class="h-12 w-auto"
-                        src="https://drive.google.com/thumbnail?id=1OTGFO_d5VG_cVs4LlrPp2wjoM77mgRdc"
-                        alt="Buena Oferta">
-                </div>
-                <!-- Menu de teléfono -->
-                <div class="hidden sm:ml-6 sm:block">
-                    <div class="flex space-x-4">
-                        <a href="{{url}}/menu" class="rounded-md bg-zinc-700 px-3 py-2 text-sm font-medium text-amber-500"
-                            aria-current="page">Inicio</a>
-                        <a href="{{url}}/agregarProducto"
-                            class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-zinc-700 hover:text-amber-500">Productos</a>
-                        <a href="{{url}}/agregarComercio"
-                            class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-zinc-700 hover:text-amber-500">Comercios</a>
-                        <a href="{{url}}/sobreNosotros"
-                            class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-zinc-700 hover:text-amber-500">Sobre
-                            nosotros</a>
-                    </div>
-                </div>
-            </div>
-            <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <!-- Profile dropdown -->
-                <div class="relative ml-3">
-                    <div class="flex items-center space-x-4">
-                        <!-- Icono de usuario -->
-                        <a href="/perfil"
-                            class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                            <span class="sr-only">Open user menu</span>
-                            <img class="h-8 w-8 rounded-full"
-                                src="https://cdn.icon-icons.com/icons2/827/PNG/512/user_icon-icons.com_66546.png"
-                                alt="">
-                        </a>
-
-                        <!-- Icono de tres puntos -->
-                        <div class="relative">
-                            <button id="dropdownButton"
-                                class="text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
-                                <span class="sr-only">Open actions menu</span>
-                                <!-- Icono de tres puntos -->
-                                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 6h.01M12 12h.01M12 18h.01" />
-                                </svg>
-                            </button>
-
-                            <!-- Menú desplegable -->
-                            <div id="dropdownMenu"
-                                class="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 hidden">
-                                <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="dropdownButton">
-                                    <a href="/registrarUsuario" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                        role="menuitem">Registrar usuario</a>
-                                    <a href="/logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                        role="menuitem">Cerrar sesión</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    <div class="relative flex h-16 items-center justify-between">
+      <div
+        class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start"
+      >
+        <div class="flex flex-shrink-0 items-center">
+          <!-- Imagen/logo -->
+          <img
+            class="h-12 w-auto"
+            src="https://drive.google.com/thumbnail?id=1OTGFO_d5VG_cVs4LlrPp2wjoM77mgRdc"
+            alt="Buena Oferta"
+          />
         </div>
+
+        <div class="hidden sm:ml-6 sm:block">
+          <div class="flex space-x-4">
+            <a
+              href="{{url}}/menu"
+              class="rounded-md bg-zinc-700 px-3 py-2 text-sm font-medium text-amber-500"
+              aria-current="page"
+            >Inicio</a>
+            <a
+              id="products-link"
+              href=""
+              class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-zinc-700 hover:text-amber-500"
+            >Productos</a>
+            <a
+              href="/listadoComercios"
+              class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-zinc-700 hover:text-amber-500"
+            >Comercios</a>
+            <a
+              href="{{url}}/sobreNosotros"
+              class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-zinc-700 hover:text-amber-500"
+            >Sobre nosotros</a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
+      >
+        <!-- Profile dropdown -->
+        <div class="relative ml-3">
+          <div class="flex items-center space-x-4">
+            <!-- Icono de usuario -->
+            <a
+              href="/perfil"
+              class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+            >
+              <span class="sr-only">Open user menu</span>
+              <img
+                class="h-8 w-8 rounded-full"
+                src="https://cdn.icon-icons.com/icons2/827/PNG/512/user_icon-icons.com_66546.png"
+                alt=""
+              />
+            </a>
+
+            <!-- Icono de tres puntos -->
+            <div class="relative">
+              <button
+                id="dropdownButton"
+                class="text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white"
+              >
+                <span class="sr-only">Open actions menu</span>
+                <!-- Icono de tres puntos -->
+                <svg
+                  class="h-6 w-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 6h.01M12 12h.01M12 18h.01"
+                  />
+                </svg>
+              </button>
+
+              <!-- Menú desplegable -->
+              <div
+                id="dropdownMenu"
+                class="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 hidden"
+              >
+                <div
+                  class="py-1"
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="dropdownButton"
+                >
+                  <a
+                    href="/registrarUsuario"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    role="menuitem"
+                  >Registrar usuario</a>
+                  <a
+                    href="/logout"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    role="menuitem"
+                  >Cerrar sesión</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </nav>
 <script>
-    const dropdownButton = document.getElementById('dropdownButton');
-    const dropdownMenu = document.getElementById('dropdownMenu');
+  const dropdownButton = document.getElementById('dropdownButton'); const
+  dropdownMenu = document.getElementById('dropdownMenu');
+  dropdownButton.addEventListener('click', () => {
+  dropdownMenu.classList.toggle('hidden'); });
+  document.addEventListener('click', (event) => { if
+  (!dropdownMenu.contains(event.target) &&
+  !dropdownButton.contains(event.target)) {
+  dropdownMenu.classList.add('hidden'); } }); const productsLink =
+  document.getElementById('products-link'); const currentPath =
+  window.location.pathname; console.log(currentPath) ;if (currentPath ==
+  '/menu') { productsLink.setAttribute('href', '#products-section'); } else {
+  productsLink.setAttribute('href', '/menu#products-section'); }
 
-    dropdownButton.addEventListener('click', () => {
-        dropdownMenu.classList.toggle('hidden');
-    });
-
-    // Opcional: Cerrar el menú al hacer clic fuera de él
-    document.addEventListener('click', (event) => {
-        if (!dropdownMenu.contains(event.target) && !dropdownButton.contains(event.target)) {
-            dropdownMenu.classList.add('hidden');
-        }
-    });
 </script>

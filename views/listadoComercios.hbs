@@ -1,0 +1,48 @@
+{{!-- puedo modificarlo, donde ya iniciaron sesion--}}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css">
+
+{{> navbar}}
+
+<div class="container mx-auto my-8" id="stores-section">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-2xl font-bold">Comercios Registrados</h2>
+  </div>
+  <div
+    id="storeGrid"
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+  >
+    <!-- Tarjetas de comercios -->
+  </div>
+</div>
+
+<script type="module">
+  import { defaultStores } from "/defaultObjectsJSON.js";
+
+  function renderStores() {
+    const storeGrid = document.getElementById("storeGrid");
+    storeGrid.innerHTML = "";
+
+    defaultStores.forEach((store) => {
+      const storeCard = document.createElement("div");
+      storeCard.className =
+        "bg-white rounded-lg shadow-md overflow-hidden hover:cursor-pointer";
+      storeCard.innerHTML = `
+        <div class="p-4">
+          <h3 class="font-bold text-lg">${store.nombre}</h3>
+          <p class="text-gray-600">${store.direccion || "Sin dirección"}</p>
+          <p class="text-gray-500 text-sm">Categoría: ${
+            store.categoria || "Sin categoría"
+          }</p>
+        </div>
+      `;
+      storeGrid.appendChild(storeCard);
+    });
+  }
+
+  // Inicialización
+  renderStores();
+</script>
+
+
+{{> footer}}

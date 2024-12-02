@@ -1,0 +1,335 @@
+{{!-- puedo modificarlo, donde ya iniciaron sesion--}}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css">
+
+{{> navbar}}
+
+<body class="bg-gray-100">
+    <!-- Hero -->
+    <div
+      class="relative bg-cover bg-center min-h-[35rem] flex items-center justify-center"
+      style="background-image: url('https://via.placeholder.com/1500x600')"
+    >
+      <div class="absolute inset-0 bg-black opacity-50"></div>
+      <div class="container mx-auto h-full flex items-center justify-center">
+        <h1 class="text-white text-4xl font-bold text-center z-10">
+          Un mundo de posibilidades, solo a un clic.
+          <br />
+          <br />
+          Consigue lo que buscas o impulsa tu comercio!
+        </h1>
+      </div>
+    </div>
+
+    <!-- Carrusel de ofertas -->
+    <div class="container mx-auto my-8">
+      <h2 class="text-2xl font-bold mb-4">Ofertas Especiales</h2>
+      <div class="relative">
+        <div
+          id="offerCarousel"
+          class="flex transition-transform duration-300 ease-in-out justify-center mx-6"
+        >
+          <!--cards de los productos en oferta-->
+        </div>
+        <button
+          id="prevOffer"
+          class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow"
+        >
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button
+          id="nextOffer"
+          class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow"
+        >
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Sección de productos -->
+    <div class="container mx-auto my-8" id="products-section">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold">Todos los Productos</h2>
+        <div class="space-x-2">
+          <select id="categoryFilter" class="border p-2 rounded">
+            <option value="">Categoría</option>
+          </select>
+          <select id="storeFilter" class="border p-2 rounded">
+            <option value="">Comercio</option>
+          </select>
+          <select id="priceFilter" class="border p-2 rounded">
+            <option value="">Precio</option>
+            <option value="asc">Menor a Mayor</option>
+            <option value="desc">Mayor a Menor</option>
+          </select>
+          <label class="inline-flex items-center">
+            <input type="checkbox" id="offerFilter" class="form-checkbox" />
+            <span class="ml-2">Solo ofertas</span>
+          </label>
+        </div>
+      </div>
+      <div
+        id="productGrid"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+      >
+        <!-- todos los productos -->
+      </div>
+      <div class="flex justify-center mt-4">
+        <button
+          id="prevPage"
+          class="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+        >
+          Anterior
+        </button>
+        <button id="nextPage" class="bg-blue-500 text-white px-4 py-2 rounded">
+          Siguiente
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal de producto -->
+    <div
+      id="productModal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50"
+    >
+      <div class="bg-white p-8 rounded-lg max-w-2xl w-full relative">
+        <div id="modalContent">
+          <!-- El contenido del modal img, nombre , descripcion -->
+        </div>
+        <button
+          id="closeModal"
+          class="mt-4 bg-red-500 text-white px-4 py-2 rounded absolute -top-7 -right-6"
+        >
+          X
+        </button>
+      </div>
+    </div>
+
+    <script type="module">
+      import {
+        defaultProducts,
+        defaultStores,
+        defaultUsers,
+      } from "/defaultObjectsJSON.js";
+
+      // Variables globales
+      let currentPage = 1;
+      const productsPerPage = 8;
+      let filteredProducts = [...defaultProducts];
+
+      // Funciones auxiliares
+      function renderProducts() {
+        const startIndex = (currentPage - 1) * productsPerPage;
+        const endIndex = startIndex + productsPerPage;
+        const productsToShow = filteredProducts.slice(startIndex, endIndex);
+
+        const productGrid = document.getElementById("productGrid");
+        productGrid.innerHTML = "";
+
+        productsToShow.forEach((product) => {
+          const productCard = document.createElement("div");
+          productCard.className =
+            "bg-white rounded-lg shadow-md overflow-hidden hover:cursor-pointer";
+          productCard.innerHTML = `
+                    <img src="${product.imagenes[0]}" alt="${
+            product.nombre_producto
+          }" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="font-bold">${product.nombre_producto}</h3>
+                        <p class="text-gray-600">$${product.precio}</p>
+                        ${
+                          product.oferta
+                            ? '<span class="bg-red-500 text-white px-2 py-1 rounded-full text-xs">Oferta</span>'
+                            : ""
+                        }
+                    </div>
+                `;
+          productCard.addEventListener("click", () =>
+            showProductModal(product)
+          );
+          productGrid.appendChild(productCard);
+        });
+
+        updatePaginationButtons();
+      }
+
+      function updatePaginationButtons() {
+        const prevButton = document.getElementById("prevPage");
+        const nextButton = document.getElementById("nextPage");
+
+        prevButton.disabled = currentPage === 1;
+        nextButton.disabled =
+          currentPage === Math.ceil(filteredProducts.length / productsPerPage);
+
+        prevButton.classList.toggle("opacity-50", prevButton.disabled);
+        nextButton.classList.toggle("opacity-50", nextButton.disabled);
+      }
+      //recibe un producto y completa la info a mostrar
+      function showProductModal(product) {
+        const modal = document.getElementById("productModal");
+        const modalContent = document.getElementById("modalContent");
+
+        modalContent.innerHTML = `
+                <div class="flex mb-4 gap-3 justify-center">
+                    ${product.imagenes
+                      .map(
+                        (img) =>
+                          `<img src="${img}" alt="${product.nombre_producto}" class="w-1/3 object-cover">`
+                      )
+                      .join("")}
+                </div>
+                <h2 class="text-2xl font-bold mb-2">${
+                  product.nombre_producto
+                }</h2>
+                <p class="text-xl mb-2">$${product.precio}</p>
+                <p class="mb-4">${product.detalles}</p>
+                <button class="bg-green-500 text-white px-4 py-2 rounded flex items-center">
+                    <i class="fab fa-whatsapp mr-2"></i> Comprar por WhatsApp
+                </button>
+            `;
+
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+      }
+
+      // Event Listeners
+
+      //para manejar el carrusel de ofertas
+      document.getElementById("prevPage").addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage--;
+          renderProducts();
+        }
+      });
+
+      document.getElementById("nextPage").addEventListener("click", () => {
+        if (
+          currentPage < Math.ceil(filteredProducts.length / productsPerPage)
+        ) {
+          currentPage++;
+          renderProducts();
+        }
+      });
+
+      //cerrar el modal
+
+      document.getElementById("closeModal").addEventListener("click", () => {
+        document.getElementById("productModal").classList.add("hidden");
+        document.getElementById("productModal").classList.remove("flex");
+      });
+
+      // Filtros
+      document
+        .getElementById("categoryFilter")
+        .addEventListener("change", applyFilters);
+      document
+        .getElementById("storeFilter")
+        .addEventListener("change", applyFilters);
+      document
+        .getElementById("priceFilter")
+        .addEventListener("change", applyFilters);
+      document
+        .getElementById("offerFilter")
+        .addEventListener("change", applyFilters);
+
+      function applyFilters() {
+        const categoryFilter = document.getElementById("categoryFilter").value;
+        const storeFilter = document.getElementById("storeFilter").value;
+        const priceFilter = document.getElementById("priceFilter").value;
+        const offerFilter = document.getElementById("offerFilter").checked;
+
+        filteredProducts = defaultProducts.filter(
+          (product) =>
+            (!categoryFilter || product.categoria === categoryFilter) &&
+            (!storeFilter ||
+              defaultStores.find(
+                (store) => store.idComercio === product.fk_id_comercio
+              )?.nombre === storeFilter) &&
+            (!offerFilter || product.oferta)
+        );
+
+        if (priceFilter === "asc") {
+          filteredProducts.sort((a, b) => a.precio - b.precio);
+        } else if (priceFilter === "desc") {
+          filteredProducts.sort((a, b) => b.precio - a.precio);
+        }
+
+        currentPage = 1;
+        renderProducts();
+      }
+
+      // Inicialización
+      function init() {
+        // Poblar los filtros
+        const categories = [
+          ...new Set(defaultProducts.map((p) => p.categoria)),
+        ];
+
+        const stores = [...new Set(defaultStores.map((s) => s.nombre))];
+
+        const categoryFilter = document.getElementById("categoryFilter");
+
+        const storeFilter = document.getElementById("storeFilter");
+
+        categories.forEach((category) => {
+          const option = document.createElement("option");
+          option.value = category;
+          option.textContent = category;
+          categoryFilter.appendChild(option);
+        });
+
+        stores.forEach((store) => {
+          const option = document.createElement("option");
+          option.value = store;
+          option.textContent = store;
+          storeFilter.appendChild(option);
+        });
+
+        renderProducts();
+
+        // Carrusel de ofertas
+        const offerCarousel = document.getElementById("offerCarousel");
+        const offerProducts = defaultProducts.filter((p) => p.oferta);
+
+        offerProducts.forEach((product) => {
+          const offerCard = document.createElement("div");
+          offerCard.className =
+            "flex-none w-64 mr-4 bg-white rounded-lg shadow-md overflow-hidden hover:cursor-pointer";
+          offerCard.innerHTML = `
+                    <img src="${product.imagenes[0]}" alt="${product.nombre_producto}" class="w-full h-40 object-cover">
+                    <div class="p-4">
+                        <h3 class="font-bold">${product.nombre_producto}</h3>
+                        <p class="text-gray-600">$${product.precio}</p>
+                    </div>
+                `;
+          offerCard.addEventListener("click", () => showProductModal(product));
+          offerCarousel.appendChild(offerCard);
+        });
+
+        let currentOfferIndex = 0;
+        const totalOffers = offerProducts.length;
+
+        document.getElementById("prevOffer").addEventListener("click", () => {
+          if (currentOfferIndex > 0) {
+            currentOfferIndex--;
+            offerCarousel.style.transform = `translateX(-${
+              currentOfferIndex * 272
+            }px)`;
+          }
+        });
+
+        document.getElementById("nextOffer").addEventListener("click", () => {
+          if (currentOfferIndex < totalOffers - 4) {
+            currentOfferIndex++;
+            offerCarousel.style.transform = `translateX(-${
+              currentOfferIndex * 272
+            }px)`;
+          }
+        });
+      }
+
+      init();
+    </script>
+  </body>
+
+{{> footer}}
