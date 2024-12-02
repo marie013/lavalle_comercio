@@ -18,7 +18,7 @@ hbs.registerPartials(path.join(__dirname, 'views/partials'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 const cookieParser = require("cookie-parser");
-app.use(cookieParser());
+app.use(cookieParser()); 
 
 const { admin } = require('./middlewares/authenticaded');
 const { logueado } = require('./middlewares/authenticaded');
@@ -28,7 +28,7 @@ const productoRoutes = require('./Routes/Producto_R')
 const categoriaRoutes = require('./Routes/Categoria_R')
 app.get('/', usuarioRoutes.inicio);
 
-
+ 
 // Rutas relacionadas a usuarios
 app.post('/menu', usuarioRoutes.menu);
 app.get('/menu', logueado, usuarioRoutes.home);
@@ -39,9 +39,13 @@ app.get("/perfil", logueado, usuarioRoutes.perfil);
 
 // administrador
 app.get('/listarUsuarios', logueado, admin, usuarioRoutes.listarUsuarios);
+app.get('/listarComercios', logueado, admin, comercioRoutes.listarComercios);
 app.get('/registrarAdministrador', logueado, admin, usuarioRoutes.formRegistrarAdministrador);
 app.post('/registrarAdministrador', logueado, admin, usuarioRoutes.registrarAdministrador);
-app.post('/eliminarUsuario', logueado, admin, usuarioRoutes.eliminarUsuario);
+app.delete('/eliminarUsuario/:idUsuario', logueado, admin, usuarioRoutes.eliminarUsuario);
+app.delete('/eliminarComercio/:idComercio', logueado, admin, comercioRoutes.eliminarComercio);
+app.get('/editarUsuario/:id_usuario', logueado, admin, usuarioRoutes.formModificarUsuario);
+app.post('/usuario/editar/:id', logueado, admin, usuarioRoutes.modificarUsuario);
 
 // categorias(solo accede el administrador)
 app.get('/listarCategorias', logueado, admin, categoriaRoutes.listarCategorias);
@@ -59,7 +63,7 @@ app.get('/agregarComercio', logueado, comercioRoutes.formAgregarComercio);
 app.post('/agregarComercio', logueado, comercioRoutes.agregarComercio);
  
 app.get('/logout', usuarioRoutes.logout);
-
+ 
 app.listen(port, () => {
     console.log(`Servidor escuchando en el puerto ${port}`);
 });
