@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Producto</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 h-screen flex justify-center items-center">
+    <section class="text-gray-600 body-font">
+        <form class="w-full max-w-lg bg-white rounded-lg p-8 flex flex-col mt-10 md:mt-0 relative z-10 shadow-md"
+            action="{{url}}/producto/editar/{{producto.id_producto}}" method="POST">
+            <input type="hidden" name="_method" value="PUT">
+
+            <h2 class="text-gray-900 text-lg mb-1 font-medium title-font">Editar Producto</h2>
+            <p class="leading-relaxed mb-5 text-gray-600">Modifica los detalles del producto</p>
+
+            <!-- Nombre-->
+            <div class="relative mb-4">
+                <label for="nombre" class="leading-7 text-sm text-gray-600">Nombre</label>
+                <input type="text" id="nombre_producto" name="nombre_producto" value="{{producto.nombre}}"
+                    class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                    required>
+            </div>
+            <!-- Precio -->
+            <div class="relative mb-4">
+                <label for="precio" class="leading-7 text-sm text-gray-600">Precio</label>
+                <input type="number" id="precio" name="precio" value="{{producto.precio}}"
+                    class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                    required>
+            </div>
+
+            <!-- Detalles-->
+            <div class="relative mb-4">
+                <label for="detalles" class="leading-7 text-sm text-gray-600">Detalles</label>
+                <textarea id="detalles" name="detalles"
+                    class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">{{producto.detalles}}</textarea>
+            </div>
+
+            <!-- Categoría -->
+            <div class="relative mb-4">
+                <label for="categoria" class="leading-7 text-sm text-gray-600">Categoría</label>
+                <select id="categoria" name="categoria"
+                    class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                    required>
+                    {{#each categorias}}
+                    <option value="{{this.idCategoria}}" {{#ifCond this.idCategoria ../producto.categoria}}selected{{/ifCond}}>
+                        {{this.nombre}}
+                    </option>
+                    {{/each}}
+                </select>
+            </div>
+
+
+            <!-- Disponibilidad, ver dijieron que podia llegar a ser la cantidad...-->
+            <div class="relative mb-4">
+                <label for="disponibilidad" class="leading-7 text-sm text-gray-600">Disponibilidad</label>
+                <select id="disponibilidad" name="disponibilidad"
+                    class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                    <option value="true" {{#if producto.disponibilidad}}selected{{/if}}>Disponible</option>
+                    <option value="false" {{#unless producto.disponibilidad}}selected{{/unless}}>No disponible</option>
+                </select>
+            </div>
+
+            <!-- Oferta -->
+            <div class="relative mb-4">
+                <label for="oferta" class="leading-7 text-sm text-gray-600">Oferta</label>
+                <select id="oferta" name="oferta"
+                    class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                    <option value="true" {{#if producto.oferta}}selected{{/if}}>En oferta</option>
+                    <option value="false" {{#unless producto.oferta}}selected{{/unless}}>No en oferta</option>
+                </select>
+            </div>
+
+            <!-- Descuento -->
+            <div class="relative mb-4">
+                <label for="descuento" class="leading-7 text-sm text-gray-600">Descuento</label>
+                <input type="number" id="descuento" name="descuento" value="{{producto.descuento}}"
+                    class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+            </div>
+            <div class="relative flex space-x-4">
+                <button type="submit"
+                    class="flex-1 text-amber-500 bg-zinc-800 border-0 py-2 px-6 focus:outline-none hover:text-zinc-800 hover:bg-amber-500 rounded text-lg">Guardar</button>
+                <button type="button"
+                    class="flex-1 text-black bg-amber-500 border-0 py-2 px-6 focus:outline-none hover:bg-zinc-800 hover:text-amber-500 rounded text-lg"
+                    onclick="window.location.href='/listarProductos'">Cancelar</button>
+            </div>
+        </form>
+    </section>
+</body>
+
+</html>

@@ -58,6 +58,11 @@ app.post('/categoria/editar/:idCategoria', logueado, admin, categoriaRoutes.modi
 //producto 
 app.get('/agregarProducto', logueado, productoRoutes.formAgregarProducto)
 app.post('/agregarProducto', logueado, upload.single('imgProducto'), productoRoutes.agregarProducto)
+app.get('/listarProductos', logueado, productoRoutes.listarProductos);
+app.delete('/eliminarProducto/:id_producto', productoRoutes.eliminarProducto);
+app.get('/editarProducto/:idProducto', logueado, admin, productoRoutes.formEditarProducto);
+app.post('/producto/editar/:idProducto', logueado, admin, productoRoutes.modificarProducto);
+
 // comercio
 app.get('/agregarComercio', logueado, comercioRoutes.formAgregarComercio);
 app.post('/agregarComercio', logueado, comercioRoutes.agregarComercio);
