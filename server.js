@@ -31,6 +31,9 @@ const categoriaRoutes = require("./Routes/Categoria_R");
 app.get("/", (req, res) => {
   res.render("./inicio", {});
 });
+app.get("/login", (req, res)=>{
+    res.render("index.hbs", {});
+} )
 app.get("/comercios", (req, res) => {
   res.render("./listadoComercios", {});
 });
@@ -41,7 +44,7 @@ app.get("/nosotros", (req, res) => {
 // Rutas relacionadas a usuarios
 app.post("/menu", usuarioRoutes.menu);
 app.get("/menu", logueado, usuarioRoutes.home);
-app.get("/registrarUsuario", logueado, usuarioRoutes.formRegistrarUsuario);
+app.get("/registrarUsuario", usuarioRoutes.formRegistrarUsuario);
 app.post("/registrarUsuario", logueado, usuarioRoutes.registrarUsuario);
 app.get("/sobreNosotros", logueado, usuarioRoutes.sobreNosotros);
 app.get("/perfil", logueado, usuarioRoutes.perfil);

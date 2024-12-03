@@ -40,26 +40,23 @@
 
                         <!-- Menú desplegable de Productos -->
                         <div class="relative group">
-                            <a href="#"
+                            <a href="{{url}}/listarUsuarios"
                                 class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
                                 Productos
                             </a>
                             <!-- Submenú -->
-
                         </div>
                         <div class="relative group">
                             <a href="{{url}}/listarComercios"
                                 class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
                                 Comercios
                             </a>
-                            <!-- Comercio-->
                         </div>
                         <div class="relative group">
                             <a href="{{url}}/listarCategorias"
                                 class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
                                 Categorias
                             </a>
-                            <!-- Comercio-->
                         </div>
 
                     </div>
@@ -67,9 +64,9 @@
             </div>
             <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <!-- Profile dropdown -->
-                <div class="relative ml-3">
+                <div class="relative ml-3 flex items-center">
                     <div>
-                        <!-- icono de usuario -->
+                        <!-- Icono de usuario -->
                         <a href="../menu"
                             class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                             <span class="sr-only">Open user menu</span>
@@ -77,6 +74,29 @@
                                 src="https://cdn.icon-icons.com/icons2/827/PNG/512/user_icon-icons.com_66546.png"
                                 alt="">
                         </a>
+                    </div>
+                    <!-- Icono de tres puntos -->
+                    <div class="relative ml-3">
+                        <button id="dropdownButton"
+                            class="text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
+                            <span class="sr-only">Open actions menu</span>
+                            <!-- Icono de tres puntos -->
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6h.01M12 12h.01M12 18h.01" />
+                            </svg>
+                        </button>
+
+                        <!-- Menú desplegable -->
+                        <div id="dropdownMenu"
+                            class="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 hidden z-50">
+                            <div class="py-1 z-55" role="menu" aria-orientation="vertical"
+                                aria-labelledby="dropdownButton">
+                                <a href="/logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    role="menuitem">Cerrar sesión</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -86,20 +106,38 @@
     <!-- Menú móvil -->
     <div class="sm:hidden hidden" id="mobile-menu">
         <div class="px-2 pt-2 pb-3 space-y-1">
-            <a href="#" class="block rounded-md bg-amber-800 px-3 py-2 text-base font-medium text-white"
+            <a href="{{url}}/listarUsuarios"
+                class="block rounded-md bg-amber-800 px-3 py-2 text-base font-medium text-white"
                 aria-current="page">Usuarios</a>
-
-            <!-- Submenú móvil para Productos -->
-
-            <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300">Productos</a>
-
+            <a href="{{url}}/listarProductos"
+                class="block rounded-md px-3 py-2 text-base font-medium text-gray-300">Productos</a>
 
             <a href="{{url}}/listarComercios"
                 class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Comercios</a>
 
             <a href="{{url}}/listarCategorias"
                 class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Categorias</a>
-
         </div>
     </div>
 </nav>
+<script>
+    const dropdownButton = document.getElementById('dropdownButton'); const
+        dropdownMenu = document.getElementById('dropdownMenu');
+    dropdownButton.addEventListener('click', () => {
+        dropdownMenu.classList.toggle('hidden');
+    });
+    document.addEventListener('click', (event) => {
+        if
+            (!dropdownMenu.contains(event.target) &&
+            !dropdownButton.contains(event.target)) {
+            dropdownMenu.classList.add('hidden');
+        }
+    }); const productsLink =
+        document.getElementById('products-link'); const currentPath =
+            window.location.pathname; console.log(currentPath); if (currentPath ==
+                '/menu') { productsLink.setAttribute('href', '#products-section'); } else {
+        productsLink.setAttribute('href', '/menu#products-section');
+        /*ver a donde mandar, con el icono usuario*/
+    }
+
+</script>

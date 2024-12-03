@@ -39,7 +39,7 @@ const menu = (req, res) => {
                 if (rol == "false") {
                     res.render("./menu", {});
                 } else {
-                    res.render("administrador/menuAdmi", {});
+                    res.redirect("/listarUsuarios"); 
                 }
             } else {
                 res.status(401).send("Credenciales inválidas o falta idUsuario");
