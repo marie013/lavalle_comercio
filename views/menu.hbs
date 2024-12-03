@@ -1,0 +1,161 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css">
+
+{{> navbar}}
+{{!-- arreglar problema de rutas con navbar y footer --}}
+
+<div>hola este es el menu principal</div>
+{{!-- terminar --}}
+
+<!-- component -->
+<div class="relative pt-2 lg:pt-2 min-h-screen">
+
+    <!-- Carrusel de imágenes (con texto "Productos" encima) -->
+    <div class="relative mt-10 w-full">
+        <!-- Texto 'Productos' en la parte superior del carrusel -->
+        <div class="absolute top-0 left-0 w-full text-center text-red-600 font-semibold text-3xl bg-black bg-opacity-70 py-2 rounded-t-xl z-10">
+            Productos
+        </div>
+
+        <div class="flex overflow-x-hidden mt-12 relative">
+            <div class="flex w-full transition-transform duration-300 ease-in-out" id="carouselImages">
+                <!-- Imágenes dinámicas cargadas desde la API -->
+            </div>
+        </div>
+
+        <!-- Botones de navegación -->
+        <button id="prevBtn" class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-black text-white p-2 rounded-full">
+            ‹
+        </button>
+        <button id="nextBtn" class="absolute top-1/2 right-0 transform -translate-y-1/2 bg-black text-white p-2 rounded-full">
+            ›
+        </button>
+    </div>
+
+    <div class="bg-cover w-full flex justify-center items-center mt-10"
+        style="background-image: url('/images/mybackground.jpeg');">
+        <div class="w-full bg-white p-5 bg-opacity-40 backdrop-filter backdrop-blur-lg">
+            <div class="w-12/12 mx-auto rounded-2xl bg-white p-5 bg-opacity-40 backdrop-filter backdrop-blur-lg">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 text-center px-2 mx-auto">
+                    <article
+                        class="bg-white p-6 mb-6 shadow transition duration-300 group transform hover:-translate-y-2 hover:shadow-2xl rounded-2xl cursor-pointer border">
+                        <a target="_self" href="/blog/slug"
+                            class="absolute opacity-0 top-0 right-0 left-0 bottom-0"></a>
+                        <div class="relative mb-4 rounded-2xl">
+                            <img class="max-h-80 rounded-2xl w-full object-cover transition-transform duration-300 transform group-hover:scale-105"
+                                src="https://images.pexels.com/photos/163097/twitter-social-media-communication-internet-network-163097.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                                alt="">
+                            <a class="flex justify-center items-center bg-red-700 bg-opacity-80 z-10 absolute top-0 left-0 w-full h-full text-white rounded-2xl opacity-0 transition-all duration-300 transform group-hover:scale-105 text-xl group-hover:opacity-100"
+                                href="/blog/slug" target="_self" rel="noopener noreferrer">
+                                Read article
+                                <svg class="ml-2 w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13 5l77-7 7M5 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                        <h3 class="font-medium text-xl leading-8">
+                            <a href="/blog/slug"
+                                class="block relative group-hover:text-red-700 transition-colors duration-200 ">
+                                Instant Help at Your Fingertips
+                            </a>
+                        </h3>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{{> footer}}
+
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const carousel = document.getElementById('carouselImages');
+        const carouselContainer = carousel.parentElement;
+
+        try {
+            // Obtener las imágenes desde la API en el backend
+            const response = await fetch('http://localhost:3333/api/imagenes');
+            const images = await response.json();
+console.log(images);
+//prueba producto
+const responsep = await fetch('http://localhost:3333/producto');
+            const producto = await responsep.json();
+console.log(producto);
+            // Limpiar el contenido inicial del carrusel
+            carousel.innerHTML = '';
+
+            // Agregar las imágenes al carrusel
+            images.forEach(imageUrl => {
+                const imgElement = document.createElement('img');
+                imgElement.src = imageUrl;  // Aquí es donde la URL debe ser correcta
+                imgElement.classList.add('w-full', 'h-64', 'object-cover', 'rounded-xl');
+                carousel.appendChild(imgElement);
+            });
+
+            // Duplicar las imágenes para crear el efecto infinito
+            images.forEach(imageUrl => {
+                const imgElement = document.createElement('img');
+                imgElement.src = imageUrl;  // Aquí es donde la URL debe ser correcta
+                imgElement.classList.add('w-full', 'h-64', 'object-cover', 'rounded-xl');
+                carousel.appendChild(imgElement);
+            });
+
+            // Configurar el carrusel después de cargar las imágenes
+            setupCarousel();
+        } catch (error) {
+            console.error('Error al cargar las imágenes:', error);
+        }
+
+        // Función para configurar el carrusel
+        function setupCarousel() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            let currentIndex = 0;
+            const totalImages = carousel.children.length;
+            const imageWidth = carouselContainer.offsetWidth;
+
+            // Actualizar el carrusel
+            function updateCarousel() {
+                const offset = -currentIndex * imageWidth;
+                carousel.style.transition = 'transform 0.5s ease';  // Asegura que la transición sea suave
+                carousel.style.transform = `translateX(${offset}px)`;
+            }
+
+            // Botones de navegación
+            prevBtn.addEventListener('click', () => {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateCarousel();
+                }
+            });
+
+            nextBtn.addEventListener('click', () => {
+                if (currentIndex < totalImages - 1) {
+                    currentIndex++;
+                    updateCarousel();
+                }
+            });
+
+            // Movimiento automático del carrusel con bucle infinito
+            setInterval(() => {
+                if (currentIndex < totalImages - 1) {
+                    currentIndex++;
+                } else {
+                    currentIndex = 0; // Reinicia a la primera imagen, pero sin reiniciar el contenedor
+                    carousel.style.transition = 'none'; // Desactivar transición para reiniciar sin salto
+                    carousel.style.transform = `translateX(0)`; // Mueve el contenedor de vuelta al inicio inmediatamente
+
+                    // Después de un breve retraso, habilitar la transición para continuar deslizándose
+                    setTimeout(() => {
+                        carousel.style.transition = 'transform 0.5s ease';
+                        updateCarousel();
+                    }, 20); // El retraso es mínimo, solo para evitar un salto
+                }
+                updateCarousel();
+            }, 3000);
+        }
+    });
+</script>

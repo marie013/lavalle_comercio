@@ -1,4 +1,4 @@
-import api from "./configApi"; // Importa la configuración de Axios
+import api from "./configApi.js"; // Importa la configuración de Axios
 
 const API = {
   // Usuarios

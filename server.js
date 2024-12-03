@@ -26,7 +26,17 @@ const usuarioRoutes = require("./Routes/Usuario_R");
 const comercioRoutes = require("./Routes/Comercio_R");
 const productoRoutes = require("./Routes/Producto_R");
 const categoriaRoutes = require("./Routes/Categoria_R");
-app.get("/", usuarioRoutes.inicio);
+
+//rutas del inicio----------
+app.get("/", (req, res) => {
+  res.render("./inicio", {});
+});
+app.get("/comercios", (req, res) => {
+  res.render("./listadoComercios", {});
+});
+app.get("/nosotros", (req, res) => {
+  res.render("./sobreNosotros", {});
+});
 
 // Rutas relacionadas a usuarios
 app.post("/menu", usuarioRoutes.menu);
