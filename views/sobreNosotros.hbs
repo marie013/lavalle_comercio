@@ -4,50 +4,102 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sobre Nosotros</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  
 </head>
+{{> navbar}}
 <body>
-  {{> navbar}}
-      <div class="bg-white py-24 sm:py-32">
-        <div class="mx-auto flex px-9">
-          <div class="max-w-2xl">
-            <h2 class="text-5xl font-bold tracking-tight text-amber-500 sm:text-4xl">Sobre nosotros</h2>
-            <p class="mt-6 text-lg leading-8 text-gray-900">Nuestro equipo está compuesto por grandes desarrolladores que buscan potenciar sus habilidades a traves de nuevos desafios y experiencias. </p>
-          </div>
-          <div class="flex gap-4 flex-wrap w-full">
-<div class="flex items-center gap-4">
-                <img class="h-16 w-16 rounded-full" src="/mariDev.png" alt="Maria Rojas">
-                <div >
-                  <h3 class="text-base font-semibold leading-7 tracking-tight text-black">Mari Rojas</h3>
-                  <p class="text-sm font-semibold leading-6 text-yellow-500">Front End Developer</p>
-                </div>
-              </div>
-              <div class="flex items-center gap-4">
-                <img class="h-16 w-16 rounded-full" src="/mariDev.png" alt="Maria Rojas">
-                <div >
-                  <h3 class="text-base font-semibold leading-7 tracking-tight text-black">Sofia Ruiz</h3>
-                  <p class="text-sm font-semibold leading-6 text-yellow-500">Full Stack Developer</p>
-                </div>
-              </div>
-              <div class="flex items-center gap-4">
-                <img class="h-16 w-16 rounded-full" src="https://robohash.org/{sebastianOribe}?set=set2" alt="Maria Rojas">
-                <div >
-                  <h3 class="text-base font-semibold leading-7 tracking-tight text-black">Sebastian Oribe</h3>
-                  <p class="text-sm font-semibold leading-6 text-yellow-500">Software Developer</p>
-                </div>
-              </div>
-              <div class="flex items-center gap-4">
-                <img class="h-16 w-16 rounded-full" src="https://robohash.org/{mauricio}" alt="Maria Rojas">
-                <div >
-                  <h3 class="text-base font-semibold leading-7 tracking-tight text-black">Mauricio Quiroga</h3>
-                  <p class="text-sm font-semibold leading-6 text-yellow-500">Software Developer</p>
-                </div>
-              </div>
-          </div>
-              
-            
-        </div>
+  <div class="bg-white py-24 sm:py-32">
+    <div class="mx-auto flex px-9">
+      <div class="max-w-2xl">
+        <h2 class="text-5xl font-bold tracking-tight text-amber-500 sm:text-4xl">Sobre nosotros</h2>
+        <p class="mt-6 text-lg leading-8 text-gray-900">Nuestro equipo está compuesto por grandes desarrolladores que buscan potenciar sus habilidades a traves de nuevos desafios y experiencias.</p>
       </div>
+      <div id="teamMembers" class="flex gap-4 flex-wrap w-full">
+        <!-- aca renderizamos la info de cada miebro -->
+      </div>
+    </div>
+  </div>
+
+  <div id="linkedinModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 items-center justify-center">
+    <div class="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+      <div id="modalContent" class="text-center"></div>
+      <button id="closeModal" ></button>
+    </div>
+  </div>
+
+  <script>
+    //EDITEN ACA SU INFORMACION PERSONAL---------------------------------------
+    const teamMembers = [
+      {
+        name: "Mari Rojas",
+        role: "Front End Developer",
+        image: "/mariDev.png",
+        linkedin: "https://www.linkedin.com/in/mari-rojas"
+      },
+      {
+        name: "Sofia Ruiz", 
+        role: "Full Stack Developer",
+        image: "/mariDev.png",
+        linkedin: "https://www.linkedin.com/in/sofia-ruiz"
+      },
+      {
+        name: "Sebastian Oribe",
+        role: "Software Developer", 
+        image: "https://robohash.org/sebastianOribe?set=set2",
+        linkedin: "https://www.linkedin.com/in/sebastian-oribe"
+      },
+      {
+        name: "Mauricio Quiroga",
+        role: "Software Developer",
+        image: "https://robohash.org/mauricio", 
+        linkedin: "https://www.linkedin.com/in/mauricio-quiroga"
+      }
+    ];
+
+    const teamContainer = document.getElementById('teamMembers');
+    const modal = document.getElementById('linkedinModal');
+    const modalContent = document.getElementById('modalContent');
+    const closeModalBtn = document.getElementById('closeModal');
+
+    teamMembers.forEach(member => {
+      const memberDiv = document.createElement('div');
+      memberDiv.className = 'team-member flex items-center gap-4 p-2 rounded-lg cursor-pointer';
+      memberDiv.innerHTML = `
+        <img class="h-16 w-16 rounded-full object-cover" src="${member.image}" alt="${member.name}">
+        <div>
+          <h3 class="text-base font-semibold leading-7 tracking-tight text-black">${member.name}</h3>
+          <p class="text-sm font-semibold leading-6 text-yellow-500">${member.role}</p>
+        </div>
+      `;
+
+      memberDiv.addEventListener('click', () => {
+        modalContent.innerHTML = `
+          <img class="mx-auto h-24 w-24 rounded-full object-cover mb-4" src="${member.image}" alt="${member.name}">
+          <h2 class="text-xl font-bold">${member.name}</h2>
+          <p class="text-yellow-500 mb-4">${member.role}</p>
+          <a href="${member.linkedin}" target="_blank" class="bg-blue-600 text-white py-2 px-4 rounded-lg inline-block">
+            Ver LinkedIn
+          </a>
+        `;
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      });
+
+      teamContainer.appendChild(memberDiv);
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    });
+  </script>
 </body>
 {{> footer}}
 </html>

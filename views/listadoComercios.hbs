@@ -17,13 +17,17 @@
 </div>
 
 <script type="module">
-  import { defaultStores } from "/defaultObjectsJSON.js";
-
+  
+ let dbComercios = [];
+ // Cargar datos de comercios
+  const responsecomer = await fetch('http://localhost:3333/comercio');
+    const comercios = await responsecomer.json();
+    dbComercios = comercios.comerciosRegistrados
   function renderStores() {
     const storeGrid = document.getElementById("storeGrid");
     storeGrid.innerHTML = "";
 
-    defaultStores.forEach((store) => {
+    dbComercios.forEach((store) => {
       const storeCard = document.createElement("div");
       storeCard.className =
         "bg-white rounded-lg shadow-md overflow-hidden hover:cursor-pointer";

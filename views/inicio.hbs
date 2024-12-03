@@ -1,9 +1,10 @@
   {{!-- puedo modificarlo, donde ya iniciaron sesion--}}
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  rel="stylesheet"
+/>
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css">
-
-  {{> navbar}}
-
+{{> navbar}}
   <body class="bg-gray-100">
       <!-- Hero -->
       <div
@@ -22,29 +23,30 @@
       </div>
 
       <!-- Carrusel de ofertas -->
-      <div class="container mx-auto my-8">
-        <h2 class="text-2xl font-bold mb-4">Productos en oferta</h2>
-        <div class="relative">
-          <div
-            id="offerCarousel"
-            class=" flex transition-transform duration-300 ease-in-out justify-center mx-6"
-          >
-            <!--cards de los productos en oferta-->
-          </div>
-          <button
-            id="prevOffer"
-            class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow"
-          >
-            <i class="fas fa-chevron-left"></i>
-          </button>
-          <button
-            id="nextOffer"
-            class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow"
-          >
-            <i class="fas fa-chevron-right"></i>
-          </button>
-        </div>
-      </div>
+      <div class="container mx-auto my-8 px-4">
+  <h2 class="text-2xl font-bold mb-4">Productos en oferta</h2>
+  <div class="relative overflow-x-hidden">
+    <div
+      id="offerCarousel"
+      class="flex transition-transform duration-300 ease-in-out justify-start mx-6 "
+    >
+      <!--cards de los productos en oferta-->
+    </div>
+    <button
+      id="prevOffer"
+      class="absolute size-14 left-2 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow z-10"
+    >
+      <i class="fas fa-chevron-left"></i>
+    </button>
+    <button
+      id="nextOffer"
+      class="absolute size-14 right-2 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow z-10"
+    >
+      <i class="fas fa-chevron-right"></i>
+    </button>
+  </div>
+</div>
+
 
       <!-- Sección de productos -->
       <div class="container mx-auto my-8" id="products-section">
@@ -322,18 +324,18 @@ function showProductModal(product) {
       const totalOffers = offerProducts.length;
 
       document.getElementById("prevOffer").addEventListener("click", () => {
-        if (currentOfferIndex > 0) {
-          currentOfferIndex--;
-          offerCarousel.style.transform = `translateX(-${currentOfferIndex * 272}px)`;
-        }
-      });
+  if (currentOfferIndex > 0) {
+    currentOfferIndex--;
+    offerCarousel.style.transform = `translateX(-${currentOfferIndex * 272}px)`;
+  }
+});
 
-      document.getElementById("nextOffer").addEventListener("click", () => {
-        if (currentOfferIndex < totalOffers - 4) {
-          currentOfferIndex++;
-          offerCarousel.style.transform = `translateX(-${currentOfferIndex * 272}px)`;
-        }
-      });
+document.getElementById("nextOffer").addEventListener("click", () => {
+  if (currentOfferIndex < totalOffers - Math.floor(offerCarousel.offsetWidth / 272)) {
+    currentOfferIndex++;
+    offerCarousel.style.transform = `translateX(-${currentOfferIndex * 272}px)`;
+  }
+});
     } catch (error) {
       console.error("Error inicializando la página:", error);
       alert("Hubo un problema cargando los productos. Por favor, intente nuevamente.");
