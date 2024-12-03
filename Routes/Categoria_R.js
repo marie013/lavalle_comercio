@@ -31,6 +31,7 @@ const agregarCategoria = (req, res) => {
 };
 // modificar 
 const formModificarCategoria = (req, res) => {
+    
     const idCategoriaAModificar = req.params.idCategoria;
     console.log("el id a modificar es: ", idCategoriaAModificar);
 

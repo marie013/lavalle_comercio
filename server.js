@@ -28,12 +28,6 @@ const productoRoutes = require("./Routes/Producto_R");
 const categoriaRoutes = require("./Routes/Categoria_R");
 app.get("/", usuarioRoutes.inicio);
 
-app.get("/inicio", (req, res) => {
-  res.sendFile(__dirname + "/views/inicio.html");
-});
-app.get("/listadoComercios", (req, res) => {
-  res.render("listadoComercios", {});
-});
 // Rutas relacionadas a usuarios
 app.post("/menu", usuarioRoutes.menu);
 app.get("/menu", logueado, usuarioRoutes.home);
@@ -44,6 +38,7 @@ app.get("/perfil", logueado, usuarioRoutes.perfil);
 
 // administrador
 app.get("/listarUsuarios", logueado, admin, usuarioRoutes.listarUsuarios);
+app.get("/listarComercios", logueado, admin, comercioRoutes.listarComercios);
 app.get(
   "/registrarAdministrador",
   logueado,
@@ -56,7 +51,30 @@ app.post(
   admin,
   usuarioRoutes.registrarAdministrador
 );
-app.post("/eliminarUsuario", logueado, admin, usuarioRoutes.eliminarUsuario);
+app.delete(
+  "/eliminarUsuario/:idUsuario",
+  logueado,
+  admin,
+  usuarioRoutes.eliminarUsuario
+);
+app.delete(
+  "/eliminarComercio/:idComercio",
+  logueado,
+  admin,
+  comercioRoutes.eliminarComercio
+);
+app.get(
+  "/editarUsuario/:id_usuario",
+  logueado,
+  admin,
+  usuarioRoutes.formModificarUsuario
+);
+app.post(
+  "/usuario/editar/:id",
+  logueado,
+  admin,
+  usuarioRoutes.modificarUsuario
+);
 
 // categorias(solo accede el administrador)
 app.get("/listarCategorias", logueado, admin, categoriaRoutes.listarCategorias);
