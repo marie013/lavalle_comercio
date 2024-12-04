@@ -38,7 +38,7 @@
                     {{#each productos}}
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            {{this.nombre}}</td>
+                            {{this.nombre_producto}}</td>
                         {{!-- categoria el nombre --}}
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                             {{this.nombreCategoria}}</td>
@@ -46,8 +46,9 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                             {{this.nombreComercio}}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{this.precio}}</td>
+                        {{!-- cambiar la disponibilidad a numeros --}}
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            {{#if disponibilidad}}si{{else}}no{{/if}}</td>
+                            {{this.disponibilidad}}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{#if
                             oferta}}si{{else}}no{{/if}}</td>
 

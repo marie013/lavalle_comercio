@@ -26,12 +26,24 @@ const usuarioRoutes = require('./Routes/Usuario_R');
 const comercioRoutes = require('./Routes/Comercio_R');
 const productoRoutes = require('./Routes/Producto_R')
 const categoriaRoutes = require('./Routes/Categoria_R')
-app.get('/', usuarioRoutes.inicio);
 
+//rutas del inicio----------
+app.get("/", (req, res) => {
+    res.render("./inicio", {});
+  });
+  app.get("/login", (req, res)=>{
+      res.render("index.hbs", {});
+  } )
+  app.get("/comercios", (req, res) => {
+    res.render("./listadoComercios", {});
+  });
+  app.get("/nosotros", (req, res) => {
+    res.render("./sobreNosotros", {});
+  });
  
 // Rutas relacionadas a usuarios
 app.post('/menu', usuarioRoutes.menu);
-app.get('/menu', logueado, usuarioRoutes.home);
+app.get('/menu',  usuarioRoutes.home);
 app.get('/registrarUsuario', logueado, usuarioRoutes.formRegistrarUsuario);
 app.post('/registrarUsuario', logueado, usuarioRoutes.registrarUsuario);
 app.get('/sobreNosotros', logueado, usuarioRoutes.sobreNosotros );
@@ -58,6 +70,11 @@ app.post('/categoria/editar/:idCategoria', logueado, admin, categoriaRoutes.modi
 //producto 
 app.get('/agregarProducto', logueado, productoRoutes.formAgregarProducto)
 app.post('/agregarProducto', logueado, upload.single('imgProducto'), productoRoutes.agregarProducto)
+app.get("/listarProductos", logueado, productoRoutes.listarProductos);
+app.delete("/eliminarProducto/:id_producto", productoRoutes.eliminarProducto);
+app.get("/editarProducto/:idProducto", logueado, admin, productoRoutes.formEditarProducto);
+app.post("/producto/editar/:idProducto", logueado, admin,productoRoutes.modificarProducto);
+
 // comercio
 app.get('/agregarComercio', logueado, comercioRoutes.formAgregarComercio);
 app.post('/agregarComercio', logueado, comercioRoutes.agregarComercio);
