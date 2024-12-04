@@ -47,25 +47,34 @@ const listarComercios = (req, res) => {
 };
 
 const listarComercioPorId = (req, res) => {
-    const idComercio = req.params.id; // Obtener el ID desde la ruta
-    console.log("ID del comercio recibido:", idComercio); 
+    const comercioId = req.params.id;
+    const urlComercio = `http://localhost:3333/comercio/${comercioId}`;
+    const urlUsuarios = "http://localhost:3333/usuario";
 
-    const urlComercio = `http://localhost:3333/comercio/${idComercio}`;
+    // Realizar solicitudes para obtener datos del comercio y usuarios
+    Promise.all([axios.get(urlComercio), axios.get(urlUsuarios)])
+        .then(([resComercio, resUsuarios]) => {
+            const comercio = resComercio.data;
+            const usuariosRegistrados = resUsuarios.data.usuariosRegistrados;
 
-    axios.get(urlComercio)
-        .then(response => {
-            const comercio = response.data; // Datos del comercio
-            res.render("comercio/tuComercio", { 
-                comercio,
-                url: "http://localhost:3333" 
-            }); // Enviar datos a la vista
+            // Encontrar al usuario propietario del comercio
+            const usuarioPropietario = usuariosRegistrados.find(
+                (usuario) => usuario.id_usuario === comercio.fk_idUsuario
+            );
+
+            // Enriquecer datos del comercio con la información del usuario
+            const comercioConUsuario = {
+                ...comercio,
+                nombreUsuario: usuarioPropietario ? usuarioPropietario.nombre : "No asignado",
+                telefonoUsuario: usuarioPropietario ? usuarioPropietario.telefono : "No disponible",
+            };
+
+            // Renderizar la vista con los datos del comercio
+            res.render("comercio/perfil", { comercio: comercioConUsuario });
         })
-        .catch(error => {
-            console.error("Error al obtener el comercio:", error.message);
-            res.status(404).render("comercio/tuComercio", { 
-                comercio: null,
-                url: "http://localhost:3333"
-            }); // Renderiza con mensaje de error
+        .catch((error) => {
+            console.error("Error al obtener datos:", error);
+            res.status(500).send("Error al obtener datos del comercio");
         });
 };
 

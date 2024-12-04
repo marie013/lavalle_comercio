@@ -6,18 +6,95 @@
     <title>Tu perfil</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-{{> navbarUser}}
+{{> navbar}}
 <body>
-<div class="bg-white rounded-lg shadow-lg border border-transparent hover:border-blue-600 transition duration-500 transform hover:scale-105 p-6  max-w-sm mx-auto md:max-w-md lg:max-w-lg mt-16 mb-20">
+<div class="bg-white rounded-lg shadow-lg border border-transparent hover:border-blue-600 transition duration-500 transform hover:scale-105 p-6  max-w-sm mx-auto md:max-w-md lg:max-w-lg mt-16">
     <div class="mb-4">
         <h1 class="text-lg font-semibold text-gray-800 text-center">Perfil del Usuario</h1>
     </div>
     <div class="space-y-4">
         <p class="text-gray-600"><strong>Nombre:</strong> {{nombre}}</p>
+        <p class="text-gray-600"><strong>Nombre:</strong> {{idUsuario}}</p>
         <p class="text-gray-600"><strong>Email:</strong> {{email}}</p>
-        <p class="text-gray-600"><strong>Telefono:</strong> {{telefono}}</p>
+        <p class="text-gray-600"><strong>Teléfono:</strong> {{telefono}}</p>
     </div>
 </div>
+<div class="relative bg-white rounded-lg shadow-lg border border-transparent hover:border-blue-600 transition duration-500 transform hover:scale-105 p-6  max-w-sm mx-auto md:max-w-md lg:max-w-lg mt-16 mb-16">
+    <div class="mb-4">
+        <h1 class="text-lg font-semibold text-gray-800 text-center">Comercios</h1>
+    </div>
+    <div id="comercios-container" class="space-y-4">
+        <!-- Los comercios se cargarán dinámicamente aquí -->
+        <p id="loading-message" class="text-center text-gray-500">Cargando comercios...</p>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const comerciosContainer = document.getElementById('comercios-container');
+    const loadingMessage = document.getElementById('loading-message');
+
+    // Obtener el ID del usuario desde las cookies
+    const userId = getCookie('idUsuario');
+    console.log('ID de usuario obtenido:', userId);
+
+    if (userId) {
+        // Hacer la petición a la API para obtener los comercios
+        fetch(/comercio/owner/${userId}, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('No se pudieron cargar los comercios');
+            }
+            return response.json();
+        })
+        .then(comercios => {
+            // Eliminar el mensaje de carga
+            loadingMessage.style.display = 'none';
+
+            if (comercios.length === 0) {
+                // Mostrar mensaje si no hay comercios
+                comerciosContainer.innerHTML = `
+                    <p class="text-center text-gray-500">No tienes comercios registrados</p>
+                `;
+            } else {
+                // Generar HTML para los comercios
+                const comerciosHTML = comercios.map(comercio => `
+                    <div class="border-b pb-4 mb-4">
+                        <p class="text-gray-600"><strong>Nombre del Comercio:</strong> ${comercio.nombre}</p>
+                        <p class="text-gray-600"><strong>Dirección:</strong> ${comercio.direccion}</p>
+                        <p class="text-gray-600"><strong>Teléfono:</strong> ${comercio.telefono}</p>
+                    </div>
+                `).join('');
+
+                comerciosContainer.innerHTML = comerciosHTML;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            loadingMessage.textContent = 'Error al cargar los comercios';
+            loadingMessage.style.color = 'red';
+        });
+    } else {
+        loadingMessage.textContent = 'Usuario no identificado';
+        loadingMessage.style.color = 'red';
+    }
+
+    // Función para obtener una cookie por su nombre
+    function getCookie(name) {
+        const value = ; ${document.cookie};
+        const parts = value.split(; ${name}=);
+        if (parts.length === 2) {
+            return parts.pop().split(';').shift();
+        }
+        return null;
+    }
+});
+</script>
 </body>
 {{> footer}}
 </html>

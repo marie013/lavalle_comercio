@@ -27,7 +27,7 @@ const agregarCategoria = (req, res) => {
     axios.post("http://localhost:3333/categoria/registrar", {
         nombre
     })
-    res.redirect("/registrarCategoria");
+    res.redirect("/listarCategorias");
 };
 // modificar 
 const formModificarCategoria = (req, res) => {
