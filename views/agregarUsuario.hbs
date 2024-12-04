@@ -1,77 +1,42 @@
-
-{{!-- --}}
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <title>Login</title>
-</head>
-
-<body class="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
-  <div class="relative py-3 sm:max-w-xl sm:mx-auto">
-    <div
-      class="absolute inset-0 bg-gradient-to-r from-amber-500 to-amber-700 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl">
-    </div>
-    <div class="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
-      <div class="max-w-md mx-auto">
-
-        <div class="flex justify-center mb-8">
-          <img class="h-auto size-24" src="/logo.png" alt="lavalle ofertas">
-        </div>
-
-        <h2 class="text-2xl font-bold text-center text-amber-500 mb-8">Registrar Usuario</h2>
-
-        <div class="divide-y divide-gray-200">
-          <form class="space-y-6" action="{{url}}/registrarUsuario" method="POST">
-            <div class="relative">
-              <input id="nombre" name="nombre" type="text" autocomplete="off" required
-                class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-amber-500"
-                placeholder="Nombre">
-              <label for="user"
-                class="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">Usuario</label>
-            </div>
-            <div class="relative">
-              <input id="Email" name="email" type="email" autocomplete="off" required
-                class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-amber-500"
-                placeholder="email">
-              <label for="email"
-                class="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">Email</label>
-            </div>
-            <div class="relative">
-              <input id="Telefono" name="telefono" type="number" autocomplete="off" required
-                class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-amber-500"
-                placeholder="Telefono">
-              <label for="telefono"
-                class="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">Telefono</label>
-            </div>
-            <div class="relative">
-              <input id="password" name="pass" type="password" autocomplete="current-password" required
-                class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-amber-500"
-                placeholder="Contraseña">
-              <label for="password"
-                class="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">Contraseña</label>
-            </div>
-            <input type="hidden" name="rol" value="false">
-            <div class="relative">
-              <button type="submit"
-                class="bg-zinc-800 w-full text-amber-500 rounded-md px-3 py-2 text-sm font-medium hover:bg-zinc-700">Registrar</button>
-              <p
-                class="mt-4 block text-center font-sans text-base font-normal leading-relaxed text-gray-700 antialiased">
-                Ya estas registrado?
-                <a class="font-semibold text-amber-600 transition-colors hover:text-blue-700"
-                  href="http://localhost:3001/">
-                  Inicia Sesión
-                </a>
-              </p>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+<script src="https://cdn.tailwindcss.com"></script>
+<form id="registrarUsuarioForm" method="POST" action="{{url}}/registrarUsuario">
+  <h2 class="text-gray-900 text-lg mb-1 font-medium title-font">Registrar Usuario</h2>
+  <p class="leading-relaxed mb-5 text-gray-600">Introduce los detalles del usuario</p>
+  
+  <div class="relative mb-4">
+    <label for="nombre" class="leading-7 text-sm text-gray-600">Nombre</label>
+    <input type="text" id="nombre" name="nombre"
+      class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+      required>
   </div>
-</body>
-
-</html>
+  
+  <div class="relative mb-4">
+    <label for="email" class="leading-7 text-sm text-gray-600">Email</label>
+    <input type="email" id="email" name="email"
+      class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+      required>
+  </div>
+  
+  <div class="relative mb-4">
+    <label for="telefono" class="leading-7 text-sm text-gray-600">Teléfono</label>
+    <input type="number" id="telefono" name="telefono"
+      class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+      required>
+  </div>
+  
+  <div class="relative mb-4">
+    <label for="password" class="leading-7 text-sm text-gray-600">Contraseña</label>
+    <input type="password" id="password" name="pass"
+      class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+      required>
+  </div>
+  
+  <input type="hidden" name="rol" value="false">
+  
+  <div class="relative flex space-x-4">
+    <button type="submit"
+      class="flex-1 text-amber-500 bg-zinc-800 border-0 py-2 px-6 focus:outline-none hover:text-zinc-800 hover:bg-amber-500 rounded text-lg">Registrar</button>
+    <a href="http://localhost:3001/"
+      class="flex-1 text-black bg-amber-500 border-0 py-2 px-6 focus:outline-none hover:bg-zinc-800 hover:text-amber-500 rounded text-lg text-center">Iniciar Sesión</a>
+  </div>
+</form>

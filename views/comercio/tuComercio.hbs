@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="bg-white rounded-lg shadow-lg border border-transparent hover:border-blue-600 transition duration-500 transform hover:scale-105 p-6 max-w-sm mx-auto md:max-w-md lg:max-w-lg mt-16 mb-20">
+        {{#if comercio}}
+        <div class="mb-4">
+            <h1 class="text-lg font-semibold text-gray-800 text-center">Datos del Comercio</h1>
+        </div>
+        <p class="text-gray-600"><strong>Nombre:</strong> {{comercio.nombre}}</p>
+        <p class="text-gray-600"><strong>Dirección:</strong> {{comercio.direccion}}</p>
+        {{!-- <p class="text-gray-600"><strong>Teléfono:</strong> {{comercio.telefono}}</p> --}}
+        <p class="text-gray-600"><strong>Propietario:</strong> {{comercio.usuarioPropietario.nombre}}</p>
+        {{else}}
+        <h2 class="text-lg font-semibold text-red-600 text-center">No se encontró el comercio con este ID.</h2>
+        {{/if}}
+    </div>
+</body>
+</html>

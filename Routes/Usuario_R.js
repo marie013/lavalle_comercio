@@ -25,7 +25,7 @@ const menu = (req, res) => {
 
                 const nombre = response.data.usuarioAutorizado.nombre;
                 const email = response.data.usuarioAutorizado.email;
-                const telefono = response.data.usuarioAutorizado.email;
+                const telefono = response.data.usuarioAutorizado.telefono;
 
                 // Establecer la cookie idUsuario con un tiempo de expiración de 1 día
                 res.cookie("idUsuario", idUsuario, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
@@ -37,7 +37,7 @@ const menu = (req, res) => {
 
                 // Renderizar plantilla basada en el rol
                 if (rol == "false") {
-                    res.render("./menu", {});
+                    res.render("./comercio/menuComercio", {});
                 } else {
                     res.redirect("/listarUsuarios"); 
                 }

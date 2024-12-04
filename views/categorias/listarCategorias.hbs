@@ -11,8 +11,8 @@
             <div>
                 <h2 class="text-xl font-semibold text-gray-900">Categorias</h2>
             </div>
-            <div class="relative group bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700">
-                <a href="#">Añadir</a>
+            <div class="relative group bg-amber-500 text-black font-medium py-2 px-4 rounded-lg hover:bg-amber-600">
+                <a href="{{url}}/registrarCategoria" class="open-modal">Añadir</a>
             </div>
         </div>
         <div class="overflow-x-auto">
@@ -21,8 +21,7 @@
                     <tr class="bg-gray-100 border-b">
                         <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Nombre</th>
-                        <th class="px-6 py-3"></th>
-                        <th></th>
+                        <th class=""></th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -30,18 +29,22 @@
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{this.nombre}}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            {{!-- modificar --}}
-                            <form action="{{URL}}/eliminarCategoria/{{idCategoria}}?_method=DELETE" method="POST">
-                                <button type="submit"
-                                    class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Eliminar</button>
-                            </form>
+                            <div class="flex space-x-2 ml-auto text-left">
+                                <form action="{{URL}}/eliminarCategoria/{{idCategoria}}?_method=DELETE" method="POST"
+                                    class="m-0">
+                                    <button type="submit"
+                                        class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                        Eliminar
+                                    </button>
+                                </form>
+                                <a href="{{url}}/editarCategoria/{{idCategoria}}"
+                                    class="bg-amber-500 hover:bg-amber-800 text-sm text-black font-medium py-1 px-2 rounded focus:outline-none focus:shadow-outline open-modal">
+                                    Editar
+                                </a>
+                            </div>
                         </td>
                         <td>
-                            {{!-- modificar --}}
-                            <form action="{{url}}/editarCategoria/{{idCategoria}}" method="GET">
-                                <button type="submit"
-                                    class="text-sm bg-blue-500 hover:bg-blue-800 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Modificar</button>
-                            </form>
+                            
                         </td>
                     </tr>
                     {{/each}}
@@ -49,6 +52,52 @@
             </table>
         </div>
     </div>
+    <div id="modal" class="fixed inset-0 hidden bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg w-3/4 max-w-lg shadow-lg">
+            <button id="closeModal" class="text-gray-500 hover:text-gray-900 absolute top-4 right-4"></button>
+            <div id="modal-content" class="p-6">
+                <!-- contenido del modal -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const openModalButtons = document.querySelectorAll(".open-modal");
+            const closeModal = document.getElementById("closeModal");
+            const modal = document.getElementById("modal");
+            const modalContent = document.getElementById("modal-content");
+
+            openModalButtons.forEach(button => {
+                button.addEventListener("click", async (e) => {
+                    e.preventDefault();
+                    try {
+                        const response = await fetch(button.href);
+                        if (!response.ok) throw new Error("Error al cargar el formulario");
+                        const content = await response.text();
+                        modalContent.innerHTML = content;
+                        modal.classList.remove("hidden");
+                    } catch (error) {
+                        console.error(error);
+                        alert("No se pudo cargar el formulario.");
+                    }
+                });
+            });
+
+            closeModal.addEventListener("click", () => {
+                modal.classList.add("hidden");
+                modalContent.innerHTML = "";
+            });
+
+            modal.addEventListener("click", (e) => {
+                if (e.target === modal) {
+                    modal.classList.add("hidden");
+                    modalContent.innerHTML = "";
+                }
+            });
+        });
+
+    </script>
 </body>
 
 </html>

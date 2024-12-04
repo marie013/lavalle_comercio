@@ -78,6 +78,8 @@ app.post("/producto/editar/:idProducto", logueado, admin,productoRoutes.modifica
 // comercio
 app.get('/agregarComercio', logueado, comercioRoutes.formAgregarComercio);
 app.post('/agregarComercio', logueado, comercioRoutes.agregarComercio);
+app.get("/menuComercio", logueado, comercioRoutes.menuComercio);
+app.get("/comercio/:idComercio", logueado, comercioRoutes.listarComercioPorId);
  
 app.get('/logout', usuarioRoutes.logout);
  
