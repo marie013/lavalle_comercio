@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,75 +8,108 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
+
 <body>
     <section class="text-gray-600 body-font h-screen flex justify-center items-center">
-        <form id="agregarProductoForm" method="post" action="/agregarProducto" enctype="multipart/form-data">
+        <form id="agregarProductoForm" enctype="multipart/form-data">
             <div class="container px-5 py-24 mx-auto flex justify-center items-center">
-                <div class="w-full max-w-lg bg-gray-100 rounded-lg p-8 flex flex-col w-full mt-10 md:mt-0 relative z-10 shadow-md">
+                <div class="w-full max-w-lg bg-gray-100 rounded-lg p-8 flex flex-col mt-10 md:mt-0 shadow-md">
                     <h2 class="text-gray-900 text-lg mb-1 font-medium title-font">Agregar Producto</h2>
                     <p class="leading-relaxed mb-5 text-gray-600">Completa los detalles del producto</p>
                     <div class="relative mb-4">
-                        
-                        <input type="text" id="nombre" name="nombre" placeholder="Nombre del producto" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                        <input type="text" id="nombre" name="nombre" placeholder="Nombre del producto"
+                            class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base py-1 px-3">
                     </div>
                     <div class="relative mb-4">
-                        
-                        <input type="number" id="precio" placeholder="Precio" name="precio" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                        <input type="number" id="precio" name="precio" placeholder="Precio"
+                            class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base py-1 px-3">
                     </div>
                     <div class="relative mb-4">
-                        
-                        <input type="text" id="detalles" placeholder="Detalle" name="detalles" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                        <input type="text" id="detalles" name="detalles" placeholder="Detalle"
+                            class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base py-1 px-3">
                     </div>
                     <div class="relative mb-4">
-                        
-                        <input type="text" id="categoria" placeholder="Categoria" name="categoria" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                        <label for="categoria" class="text-gray-700">Categoría</label>
+                        <select id="categoria" name="categoria"
+                            class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base py-2 px-3">
+                            <option value="" disabled selected>Selecciona una categoría</option>
+                            {{#each categorias}}
+                            <option value="{{this.idCategoria}}">{{this.nombre}}</option>
+                            {{/each}}
+                        </select>
                     </div>
                     <div class="relative mb-4">
-                            <input type="number" id="disponibilidad" name="disponibilidad" placeholder="Disponibilidad" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 transition-colors duration-200 ease-in-out">
-                        </div>
-                        <div class="relative mb-4">
-                            <input type="checkbox" id="oferta" name="oferta" class="mr-2 leading-tight">
-                            <span>Oferta</span>
-                        </div>
-                        <div class="relative mb-4">
-                            <input type="number" id="descuento" name="descuento" placeholder="Descuento" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 transition-colors duration-200 ease-in-out">
-                        </div>
-                        <div class="relative mb-4">
-                        
-                        <input id="imgProducto" type="file" name="imgProducto" accept="image/png, image/jpeg, image/webp" placeholder="Imagen" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 transition-colors duration-200 ease-in-out"/>    
-                        </div>
-                    <div class="relative flex space-x-4">
-                        <button type="submit" class="flex-1 text-amber-500 bg-zinc-800 border-0 py-2 px-6 focus:outline-none hover:text-zinc-800 hover:bg-amber-500 rounded text-lg" onclick="submitForm()">Agregar</button> 
-                        <button type="button" class="flex-1 text-black bg-amber-500 border-0 py-2 px-6 focus:outline-none hover:bg-zinc-800 hover:text-amber-500 rounded text-lg" onclick="window.location.href='{{url}}/menu'">Cancelar</button>  
+                        <label for="comercio" class="text-gray-700">Comercio</label>
+                        <select id="comercio" name="comercio"
+                            class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base py-2 px-3">
+                            <option value="" disabled selected>Selecciona un comercio</option>
+                            {{#each comercios}}
+                            <option value="{{this.idComercio}}">{{this.nombre}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="relative mb-4">
+                        <input type="number" id="disponibilidad" name="disponibilidad" placeholder="Disponibilidad"
+                            class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base py-1 px-3">
+                    </div>
+                    <div class="relative mb-4">
+                        <input type="checkbox" id="oferta" name="oferta" class="mr-2">
+                        <span>Oferta</span>
+                    </div>
+                    <div class="relative mb-4">
+                        <input type="number" id="descuento" name="descuento" placeholder="Descuento"
+                            class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base py-1 px-3">
+                    </div>
+                    <div class="relative mb-4">
+                        <input type="file" id="imgProducto" name="imgProducto" multiple
+                            accept="image/png, image/jpeg, image/webp"
+                            class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base py-1 px-3">
+                    </div>
+                    <div class="flex space-x-4">
+                        <button type="button" class="flex-1 bg-blue-500 text-white py-2 px-6 rounded"
+                            onclick="submitForm()">Agregar</button>
+                        <button type="button" class="flex-1 bg-gray-300 py-2 px-6 rounded"
+                            onclick="window.location.href='/menu'">Cancelar</button>
                     </div>
                 </div>
             </div>
         </form>
         <script>
-        function submitForm(event) {
-            event.preventDefault(); 
-            const form = document.getElementById('agregarProductoForm');
-            const formData = new FormData(form);
+            async function submitForm() {
+                const form = document.getElementById('agregarProductoForm');
+                const formData = new FormData(form);
 
-            // valor de "oferta"
-            formData.set("oferta", document.getElementById("oferta").checked);
+                // Obtener el ID del comercio seleccionado
+                const comercioSeleccionado = document.getElementById('comercio').value;
 
-            axios.post('/agregarProducto', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
+                // Verificar el valor del comercio seleccionado
+                console.log("ID del comercio seleccionado:", comercioSeleccionado);
+
+                if (!comercioSeleccionado) {
+                    alert('Por favor selecciona un comercio.');
+                    return;
                 }
-            })
-            .then(response => {
-                alert("Producto agregado exitosamente");
-            })
-            .catch(error => {
-                console.error('Error al enviar el producto:', error);
-                alert('Error al agregar producto');
-            });
-        }
-    </script>
-    </section>
-    
 
+                // Asegurarte de incluir el comercio en los datos enviados
+                formData.set('idComercio', comercioSeleccionado);
+
+                // Otros campos adicionales, como la oferta
+                formData.set("oferta", document.getElementById("oferta").checked);
+
+                try {
+                    // Usar el ID del comercio seleccionado en la URL
+                    const response = await axios.post(`http://localhost:3333/producto/registrar/${comercioSeleccionado}`, formData, {
+                        headers: { 'Content-Type': 'multipart/form-data' }
+                    });
+                    alert('Producto agregado exitosamente');
+                } catch (error) {
+                    console.error('Error al enviar el producto:', error.response?.data || error.message);
+                    alert('Error al agregar producto');
+                }
+            }
+
+        </script>
+    </section>
 </body>
+
 </html>

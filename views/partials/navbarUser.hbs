@@ -17,23 +17,14 @@
         <div class="hidden sm:ml-6 sm:block">
           <div class="flex space-x-4">
             <a
-              href="/"
+              href="{{url}}/menuComercio"
               class="rounded-md bg-zinc-700 px-3 py-2 text-sm font-medium text-amber-500"
               aria-current="page"
             >Inicio</a>
             <a
-              id="products-link"
-              href=""
+              href="{{url}}/comercio/{{idComercio}}"
               class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-zinc-700 hover:text-amber-500"
-            >Productos</a>
-            <a
-              href="/comercios"
-              class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-zinc-700 hover:text-amber-500"
-            >Comercios</a>
-            <a
-              href="/nosotros"
-              class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-zinc-700 hover:text-amber-500"
-            >Sobre nosotros</a>
+            >Tu Comercio</a>
           </div>
         </div>
       </div>
@@ -91,11 +82,11 @@
                   aria-orientation="vertical"
                   aria-labelledby="dropdownButton"
                 >
-                  <a
+                  {{!-- <a
                     href="/login"
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     role="menuitem"
-                  >Iniciar sesion</a>
+                  >Iniciar sesion</a> --}}
                   <a
                     href="/logout"
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -122,6 +113,6 @@
   document.getElementById('products-link'); const currentPath =
   window.location.pathname; console.log(currentPath) ;if (currentPath ==
   '/menu') { productsLink.setAttribute('href', '#products-section'); } else {
-  productsLink.setAttribute('href', '/#products-section'); }
+  productsLink.setAttribute('href', '/menu#products-section'); }
 
 </script>

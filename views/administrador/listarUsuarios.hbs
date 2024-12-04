@@ -11,14 +11,14 @@
             <div>
                 <h2 class="text-xl font-semibold text-gray-900">Usuarios</h2>
             </div>
-            <div class="relative group bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700">
+            <div class="relative group bg-amber-500 text-black font-medium py-2 px-4 rounded-lg hover:bg-amber-600">
                 <a href="#">Añadir</a>
                 <!-- Submenú -->
                 <div class="absolute hidden group-hover:block bg-gray-600 rounded-md mt-1 shadow-lg z-10 left-[-50px]">
                     <a href="{{url}}/registrarUsuario"
-                        class="block px-4 py-2 text-sm text-white hover:bg-amber-800">Usuario</a>
+                        class="block px-4 py-2 rounded text-sm text-white hover:bg-amber-600">Usuario</a>
                     <a href="{{url}}/registrarAdministrador"
-                        class="block px-4 py-2 text-sm text-white hover:bg-amber-800">Administrador</a>
+                        class="block px-4 py-2 rounded text-sm text-white hover:bg-amber-600">Administrador</a>
                 </div>
             </div>
         </div>
@@ -51,7 +51,7 @@
                         <td>
                             <form action="{{url}}/editarUsuario/{{id_usuario}}" method="GET">
                                 <button type="submit"
-                                    class="text-sm bg-blue-500 hover:bg-blue-800 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Modificar</button>
+                                    class="text-sm bg-amber-500 hover:bg-amber-800 text-black font-medium py-1 px-2 rounded focus:outline-none focus:shadow-outline">Modificar</button>
                             </form>
                         </td>
                     </tr>

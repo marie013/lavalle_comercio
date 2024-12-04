@@ -2,6 +2,9 @@ const axios = require('axios');
 const fs = require('fs');
 const Handlebars = require('hbs');
 
+const menuComercio = (req, res) =>{
+    res.render('./comercio/menuComercio')
+}
 const formAgregarComercio = (req, res) => {
     res.render("./comercio/agregarComercio", {});
 }
@@ -43,6 +46,28 @@ const listarComercios = (req, res) => {
         });
 };
 
+const listarComercioPorId = (req, res) => {
+    const idComercio = req.params.id; // Obtener el ID desde la ruta
+    console.log("ID del comercio recibido:", idComercio); 
+
+    const urlComercio = `http://localhost:3333/comercio/${idComercio}`;
+
+    axios.get(urlComercio)
+        .then(response => {
+            const comercio = response.data; // Datos del comercio
+            res.render("comercio/tuComercio", { 
+                comercio,
+                url: "http://localhost:3333" 
+            }); // Enviar datos a la vista
+        })
+        .catch(error => {
+            console.error("Error al obtener el comercio:", error.message);
+            res.status(404).render("comercio/tuComercio", { 
+                comercio: null,
+                url: "http://localhost:3333"
+            }); // Renderiza con mensaje de error
+        });
+};
 
 
 const agregarComercio = (req, res) => {
@@ -67,6 +92,7 @@ const agregarComercio = (req, res) => {
                 console.log('id_comercio almacenado en cookies');
             </script>
         `);
+            res.redirect('/menuComercio');
         })
         .catch(error => {
             console.error("Error al agregar comercio:", error);
@@ -95,5 +121,7 @@ module.exports = {
     formAgregarComercio,
     agregarComercio, 
     listarComercios , 
-    eliminarComercio
+    eliminarComercio,
+    menuComercio,
+    listarComercioPorId
 };
