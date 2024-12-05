@@ -98,7 +98,7 @@ const registrarUsuario = (req, res) => {
     })
         .then(response => {
             if (response.status === 201) {
-                res.render("./agregarUsuario", {});
+                res.render("./index", {});
             } else {
                 console.log("Error en los datos ingresados");
             }

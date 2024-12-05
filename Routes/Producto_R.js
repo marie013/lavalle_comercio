@@ -49,7 +49,7 @@ const agregarProducto = (req, res) => {
     })
         .then(response => {
             console.log("Producto agregado:", req.body);
-            res.render("./menu", {});
+            res.render("./menuComercio", {});
         })
         .catch(error => {
             console.error("Error al enviar producto al servidor:", error);

@@ -2,101 +2,55 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
     <div class="relative flex h-16 items-center justify-between">
-      <div
-        class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start"
-      >
+      <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
         <div class="flex flex-shrink-0 items-center">
           <!-- Imagen/logo -->
-          <img
-            class="h-12 w-auto"
-            src="https://drive.google.com/thumbnail?id=1OTGFO_d5VG_cVs4LlrPp2wjoM77mgRdc"
-            alt="Buena Oferta"
-          />
+          <img class="h-12 w-auto" src="https://drive.google.com/thumbnail?id=1OTGFO_d5VG_cVs4LlrPp2wjoM77mgRdc"
+            alt="Buena Oferta" />
         </div>
 
         <div class="hidden sm:ml-6 sm:block">
           <div class="flex space-x-4">
-            <a
-              href="{{url}}/"
-              class="rounded-md bg-zinc-700 px-3 py-2 text-sm font-medium text-amber-500"
-              aria-current="page"
-            >Inicio</a>
-            <a
-              id="products-link"
-              href=""
-              class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-zinc-700 hover:text-amber-500"
-            >Productos</a>
-            <a
-              href="/comercios"
-              class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-zinc-700 hover:text-amber-500"
-            >Comercios</a>
-            <a
-              href="/nosotros"
-              class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-zinc-700 hover:text-amber-500"
-            >Sobre nosotros</a>
+            <a href="{{url}}/" class="rounded-md bg-zinc-700 px-3 py-2 text-sm font-medium text-amber-500"
+              aria-current="page">Inicio</a>
+            <a id="products-link" href=""
+              class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-zinc-700 hover:text-amber-500">Productos</a>
+            <a href="/comercios"
+              class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-zinc-700 hover:text-amber-500">Comercios</a>
+            <a href="/nosotros"
+              class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-zinc-700 hover:text-amber-500">Sobre
+              nosotros</a>
           </div>
         </div>
       </div>
-      <div
-        class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
-      >
+      <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
         <!-- Profile dropdown -->
         <div class="relative ml-3">
           <div class="flex items-center space-x-4">
             <!-- Icono de usuario -->
-              <span class="sr-only">Open user menu</span>
-              <img
-                class="h-8 w-8 rounded-full"
-                src="https://cdn.icon-icons.com/icons2/827/PNG/512/user_icon-icons.com_66546.png"
-                alt=""
-              />
-            </a>
+
 
             <!-- Icono de tres puntos -->
             <div class="relative">
-              <button
-                id="dropdownButton"
-                class="text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white"
-              >
+              <button id="dropdownButton"
+                class="text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
                 <span class="sr-only">Open actions menu</span>
                 <!-- Icono de tres puntos -->
-                <svg
-                  class="h-6 w-6"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M12 6h.01M12 12h.01M12 18h.01"
-                  />
+                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 6h.01M12 12h.01M12 18h.01" />
                 </svg>
               </button>
 
               <!-- Menú desplegable -->
-              <div
-                id="dropdownMenu"
-                class="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 hidden z-50"
-              >
-                <div
-                  class="py-1 z-55"
-                  role="menu"
-                  aria-orientation="vertical"
-                  aria-labelledby="dropdownButton"
-                >
-                  <a
-                    href="/login"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    role="menuitem"
-                  >Iniciar sesion</a>
-                  <a
-                    href="/logout"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    role="menuitem"
-                  >Cerrar sesión</a>
+              <div id="dropdownMenu"
+                class="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 hidden z-50">
+                <div class="py-1 z-55" role="menu" aria-orientation="vertical" aria-labelledby="dropdownButton">
+                  <a href="/login" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    role="menuitem">Iniciar sesion</a>
+                  <a href="/registrarUsuario" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 open-modal"
+                    role="menuitem">Registrarse</a>
                 </div>
               </div>
             </div>
@@ -106,18 +60,67 @@
     </div>
   </div>
 </nav>
+{{!-- modal para form --}}
+<div id="modal" class="fixed inset-0 hidden bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-lg w-3/4 max-w-lg shadow-lg">
+    <button id="closeModal" class="text-gray-500 hover:text-gray-900 absolute top-4 right-4">x</button>
+    <div id="modal-content" class="p-6">
+      <!-- contenido del modal -->
+    </div>
+  </div>
+</div>
+
 <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const openModalButtons = document.querySelectorAll(".open-modal");
+    const closeModal = document.getElementById("closeModal");
+    const modal = document.getElementById("modal");
+    const modalContent = document.getElementById("modal-content");
+
+    openModalButtons.forEach(button => {
+      button.addEventListener("click", async (e) => {
+        e.preventDefault();
+        try {
+          const response = await fetch(button.href);
+          if (!response.ok) throw new Error("Error al cargar el formulario");
+          const content = await response.text();
+          modalContent.innerHTML = content;
+          modal.classList.remove("hidden");
+        } catch (error) {
+          console.error(error);
+          alert("No se pudo cargar el formulario.");
+        }
+      });
+    });
+
+    closeModal.addEventListener("click", () => {
+      modal.classList.add("hidden");
+      modalContent.innerHTML = "";
+    });
+
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) { // Solo cierra si el clic es fuera del contenido
+        modal.classList.add("hidden");
+        modalContent.innerHTML = "";
+      }
+    });
+  });
   const dropdownButton = document.getElementById('dropdownButton'); const
-  dropdownMenu = document.getElementById('dropdownMenu');
+    dropdownMenu = document.getElementById('dropdownMenu');
   dropdownButton.addEventListener('click', () => {
-  dropdownMenu.classList.toggle('hidden'); });
-  document.addEventListener('click', (event) => { if
-  (!dropdownMenu.contains(event.target) &&
-  !dropdownButton.contains(event.target)) {
-  dropdownMenu.classList.add('hidden'); } }); const productsLink =
-  document.getElementById('products-link'); const currentPath =
-  window.location.pathname; console.log(currentPath) ;if (currentPath ==
-  '/menu') { productsLink.setAttribute('href', '#products-section'); } else {
-  productsLink.setAttribute('href', '/menu#products-section'); }
+    dropdownMenu.classList.toggle('hidden');
+  });
+  document.addEventListener('click', (event) => {
+    if
+      (!dropdownMenu.contains(event.target) &&
+      !dropdownButton.contains(event.target)) {
+      dropdownMenu.classList.add('hidden');
+    }
+  }); const productsLink =
+    document.getElementById('products-link'); const currentPath =
+      window.location.pathname; console.log(currentPath); if (currentPath ==
+        '/menu') { productsLink.setAttribute('href', '#products-section'); } else {
+    productsLink.setAttribute('href', '/menu#products-section');
+  }
 
 </script>

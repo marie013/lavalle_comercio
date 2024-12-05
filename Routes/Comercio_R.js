@@ -7,7 +7,7 @@ const menuComercio = (req, res) =>{
 }
 const formAgregarComercio = (req, res) => {
     res.render("./comercio/agregarComercio", {});
-}
+} 
 const listarComercios = (req, res) => {
     const urlComercios = 'http://localhost:3333/comercio';
     const urlUsuarios = 'http://localhost:3333/usuario';
@@ -38,13 +38,13 @@ const listarComercios = (req, res) => {
             });
 
             // Renderizar la vista con los datos enriquecidos
-            res.render("administrador/listarComercios", { comercios: comerciosConUsuarios });
+            res.render("administrador/listarComercios", { comercios: comerciosConUsuarios }); 
         })
         .catch(error => {
             console.error('Error al obtener datos:', error);
             res.status(500).send('Error al obtener datos');
         });
-};
+}; 
 
 const listarComercioPorId = (req, res) => {
     const comercioId = req.params.id;
@@ -90,24 +90,22 @@ const agregarComercio = (req, res) => {
         direccion: req.body.direccion,
         fk_idUsuario: idUsuario
     })
-        .then(response => {
-            console.log(response.data);
-            const id_comercio = response.data.comercioNuevo.idComercio;
-            console.log("Comercio registrado con id:", id_comercio);
-            // Establecer la cookie id_comercio, expiración de 1 día
-            res.cookie("id_comercio", id_comercio, { httpOnly: true });
-            res.send(`
-            <script>
-                console.log('id_comercio almacenado en cookies');
-            </script>
-        `);
-            res.redirect('/menuComercio');
-        })
-        .catch(error => {
-            console.error("Error al agregar comercio:", error);
-            res.status(500).send("Error al agregar comercio");
-        });
-}
+    .then(response => {
+        console.log(response.data);
+        const id_comercio = response.data.comercioNuevo.idComercio;
+        console.log("Comercio registrado con id:", id_comercio);
+        // Establecer la cookie id_comercio, expiración de 1 día
+        res.cookie("id_comercio", id_comercio, { httpOnly: true });
+
+        // Redirigir a la ruta /menuComercio
+        res.redirect("/menuComercio");
+    })
+    .catch(error => {
+        console.error("Error al agregar comercio:", error);
+        res.status(500).send("Error al agregar comercio");
+    });
+};
+
 const eliminarComercio = (req, res) => {
     const idComercio = req.params.idComercio; // Obtener ID desde la ruta
     console.log("ID del comercio a eliminar:", idComercio);
