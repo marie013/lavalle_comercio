@@ -44,11 +44,12 @@ app.get("/", (req, res) => {
 // Rutas relacionadas a usuarios
 app.post('/menu', usuarioRoutes.menu);
 app.get('/menu',  usuarioRoutes.home);
-app.get('/registrarUsuario', logueado, usuarioRoutes.formRegistrarUsuario);
-app.post('/registrarUsuario', logueado, usuarioRoutes.registrarUsuario);
-app.get('/sobreNosotros', logueado, usuarioRoutes.sobreNosotros );
+app.get('/registrarUsuario', usuarioRoutes.formRegistrarUsuario);
+app.post('/registrarUsuario', usuarioRoutes.registrarUsuario);
+app.get('/sobreNosotros', usuarioRoutes.sobreNosotros );
 app.get("/perfil", logueado, usuarioRoutes.perfil);
-
+app.get("/tusProductos", logueado, comercioRoutes.prodComercio);
+ 
 // administrador
 app.get('/listarUsuarios', logueado, admin, usuarioRoutes.listarUsuarios);
 app.get('/listarComercios', logueado, admin, comercioRoutes.listarComercios);
@@ -58,7 +59,7 @@ app.delete('/eliminarUsuario/:idUsuario', logueado, admin, usuarioRoutes.elimina
 app.delete('/eliminarComercio/:idComercio', logueado, admin, comercioRoutes.eliminarComercio);
 app.get('/editarUsuario/:id_usuario', logueado, admin, usuarioRoutes.formModificarUsuario);
 app.post('/usuario/editar/:id', logueado, admin, usuarioRoutes.modificarUsuario);
-
+   
 // categorias(solo accede el administrador)
 app.get('/listarCategorias', logueado, admin, categoriaRoutes.listarCategorias);
 app.get('/registrarCategoria', logueado, admin, categoriaRoutes.formAgregarCategoria);
@@ -66,23 +67,23 @@ app.post('/registrarCategoria', logueado, admin, categoriaRoutes.agregarCategori
 app.delete('/eliminarCategoria/:idCategoria', logueado, admin, categoriaRoutes.eliminarCategoria);
 app.get('/editarCategoria/:idCategoria', logueado, admin, categoriaRoutes.formModificarCategoria);
 app.post('/categoria/editar/:idCategoria', logueado, admin, categoriaRoutes.modificarCategoria);
-
+    
 //producto 
 app.get('/agregarProducto', logueado, productoRoutes.formAgregarProducto)
 app.post('/agregarProducto', logueado, upload.single('imgProducto'), productoRoutes.agregarProducto)
 app.get("/listarProductos", logueado, productoRoutes.listarProductos);
 app.delete("/eliminarProducto/:id_producto", productoRoutes.eliminarProducto);
-app.get("/editarProducto/:idProducto", logueado, admin, productoRoutes.formEditarProducto);
-app.post("/producto/editar/:idProducto", logueado, admin,productoRoutes.modificarProducto);
-
+app.get("/editarProducto/:idProducto", logueado, productoRoutes.formEditarProducto);
+app.post("/producto/editar/:idProducto", logueado, productoRoutes.modificarProducto);
+ 
 // comercio
 app.get('/agregarComercio', logueado, comercioRoutes.formAgregarComercio);
 app.post('/agregarComercio', logueado, comercioRoutes.agregarComercio);
 app.get("/menuComercio", logueado, comercioRoutes.menuComercio);
-app.get("/comercio/:idComercio", logueado, comercioRoutes.listarComercioPorId);
+app.get("/comercio/:id", logueado, comercioRoutes.listarComercioPorId);
  
 app.get('/logout', usuarioRoutes.logout);
  
 app.listen(port, () => {
     console.log(`Servidor escuchando en el puerto ${port}`);
-});
+}); 

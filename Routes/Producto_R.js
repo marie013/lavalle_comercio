@@ -49,7 +49,7 @@ const agregarProducto = (req, res) => {
     })
         .then(response => {
             console.log("Producto agregado:", req.body);
-            res.render("./menu", {});
+            res.render("./menuComercio", {});
         })
         .catch(error => {
             console.error("Error al enviar producto al servidor:", error);
@@ -107,10 +107,16 @@ const listarProductos = (req, res) => {
                     idComercio: comercioId,
                     nombreComercio: comercioNombre,
                     idProducto: producto.id_producto,
-                    nombre_producto: producto.nombre
+                    nombre_producto: producto.nombre_producto
                 };
             });
-            res.render("productos/listarProductos", { productos: productosConDetalles });
+            const rol = req.cookies.rol;
+            // Renderizar plantilla basada en el rol
+            if (rol == "true") {
+                res.render("productos/listarProductos", { productos: productosConDetalles });
+            } else {
+                res.redirect("/tusProductos"); 
+            }
         })
         .catch(error => {
             console.error('Error al obtener datos:', error);
@@ -121,16 +127,22 @@ const listarProductos = (req, res) => {
 const eliminarProducto = (req, res) => {
     console.log(req.params);
     const idProducto = req.params.id_producto;
+    const rol = req.cookies.rol;
     console.log(idProducto)
     axios.delete(`http://localhost:3333/producto/${idProducto}`)
         .then(() => {
-            res.redirect('/listarProductos');
+            // Renderizar plantilla basada en el rol
+            if (rol == "false") {
+                res.redirect("/tusProductos");
+            } else {
+                res.redirect("/listarProductos");  
+            }
         }).catch((error) => {
             console.error("error al eliminar producto", error.response ? error.response.data : error.message);
             res.status(500).render('productos/listarProductos', {
                 error: "No se pudo eliminar el producto. Intenta nuevamente.",
             });
-        })
+        })
 }
 
 const formEditarProducto = (req, res) => {
@@ -175,7 +187,7 @@ const modificarProducto = (req, res) => {
 
             // Crear el objeto con la estructura correcta incluyendo las imágenes
             const productoModificado = {
-                nombre: nombre_producto,
+                nombre_producto: nombre_producto,
                 precio: precio,
                 detalles: detalles,
                 categoria: categoria,

@@ -2,7 +2,7 @@ const axios = require('axios');
 const fs = require('fs');
 const Handlebars = require('hbs');
 
-const menuComercio = (req, res) =>{
+const menuComercio = (req, res) => {
     res.render('./comercio/menuComercio')
 }
 const formAgregarComercio = (req, res) => {
@@ -96,18 +96,61 @@ const agregarComercio = (req, res) => {
             console.log("Comercio registrado con id:", id_comercio);
             // Establecer la cookie id_comercio, expiración de 1 día
             res.cookie("id_comercio", id_comercio, { httpOnly: true });
-            res.send(`
-            <script>
-                console.log('id_comercio almacenado en cookies');
-            </script>
-        `);
-            res.redirect('/menuComercio');
+
+            // Redirigir a la ruta /menuComercio
+            res.redirect("/menuComercio");
         })
         .catch(error => {
             console.error("Error al agregar comercio:", error);
             res.status(500).send("Error al agregar comercio");
         });
-}
+};
+
+// mostrar los productos de los comercios donde fk_idUsuario == idUsuario(de la cookie)
+const prodComercio = (req, res) => {
+    const idUsuario = req.cookies.idUsuario;
+    const urlComercios = 'http://localhost:3333/comercio';
+    const urlProductos = 'http://localhost:3333/producto';
+    const urlCategorias = 'http://localhost:3333/categorias';
+
+    // Obtener comercios, productos y categorías
+    Promise.all([axios.get(urlCategorias), axios.get(urlComercios), axios.get(urlProductos)])
+        .then(([resCategorias, resComercios, resProductos]) => {
+            const categorias = resCategorias.data.categoriasRegistradas || [];
+            const comercios = resComercios.data.comerciosRegistrados || [];
+            const productos = resProductos.data.productosRegistrados || [];
+            // Crear un mapa de categorías para acceso rápido
+            const categoriasMap = {};
+            categorias.forEach(categoria => {
+                categoriasMap[categoria.idCategoria] = categoria.nombre; // Asocia ID de categoría con nombre
+            });
+            // Filtrar comercios del usuario actual
+            const comerciosDelUsuario = comercios.filter(comercio => comercio.fk_idUsuario === idUsuario);
+
+            // Agregar productos con el nombre de la categoría a cada comercio
+            const comerciosConProductos = comerciosDelUsuario.map(comercio => {
+                const productosDelComercio = productos
+                    .filter(producto => producto.fk_id_comercio === comercio.idComercio)
+                    .map(producto => {
+                        return {
+                            ...producto,
+                            nombreCategoria: categoriasMap[producto.categoria] || 'Sin categoría' // Añadir nombre de la categoría
+                        };
+                    });
+                return {
+                    ...comercio,
+                    productos: productosDelComercio // Agregar productos al comercio
+                };
+            });
+            // Renderizar la vista con los datos estructurados
+            res.render('comercio/productosComercio', { comercios: comerciosConProductos });
+        })
+        .catch(error => {
+            console.error('Error al obtener datos:', error.message);
+            res.status(500).send("Error al obtener los datos.");
+        });
+};
+
 const eliminarComercio = (req, res) => {
     const idComercio = req.params.idComercio; // Obtener ID desde la ruta
     console.log("ID del comercio a eliminar:", idComercio);
@@ -128,9 +171,10 @@ const eliminarComercio = (req, res) => {
 
 module.exports = {
     formAgregarComercio,
-    agregarComercio, 
-    listarComercios , 
+    agregarComercio,
+    listarComercios,
     eliminarComercio,
     menuComercio,
-    listarComercioPorId
+    listarComercioPorId,
+    prodComercio
 };
