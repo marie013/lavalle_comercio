@@ -65,11 +65,26 @@ const perfil = (req, res) => {
     console.log("Nombre:", nombre);
     console.log("Email:", email);
     console.log("Teléfono:", telefono);
-    // traigo el comercio que tiene un usuario
-    
-    // const nombreCom= comercios.nombre
-    // Pasar la información a la plantilla
-    res.render("users/perfil", { nombre, email, telefono, idUsuario});
+
+    axios.get(`http://localhost:3333/comercio/owner/${idUsuario}`)
+        .then(response => {
+            const comercios = response.data.comercio;
+
+            console.log("Comercios relacionados al usuario:");
+            console.log(comercios);
+
+            res.render("users/perfil", { 
+                nombre, 
+                email, 
+                telefono, 
+                idUsuario,
+                comercios // Pasar la lista de comercios a la vista
+            });
+        })
+        .catch(error => {
+            console.error('Error al obtener usuarios con comercios:', error);
+            res.status(500).send('Error al obtener usuarios');
+        });
 };
 
 // ----------listar usuarios----------
