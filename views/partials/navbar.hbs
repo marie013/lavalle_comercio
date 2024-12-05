@@ -16,7 +16,6 @@
 
         <div class="hidden sm:ml-6 sm:block">
           <div class="flex space-x-4">
-
             <a
               href="/"
               class="rounded-md bg-zinc-700 px-3 py-2 text-sm font-medium text-amber-500"
@@ -35,7 +34,6 @@
               href="/nosotros"
               class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-zinc-700 hover:text-amber-500"
             >Sobre nosotros</a>
-
           </div>
         </div>
       </div>
@@ -46,6 +44,17 @@
         <div class="relative ml-3">
           <div class="flex items-center space-x-4">
             <!-- Icono de usuario -->
+            <a
+              href="/perfil"
+              class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+            >
+              <span class="sr-only">Open user menu</span>
+              <img
+                class="h-8 w-8 rounded-full"
+                src="https://cdn.icon-icons.com/icons2/827/PNG/512/user_icon-icons.com_66546.png"
+                alt=""
+              />
+            </a>
 
             <!-- Icono de tres puntos -->
             <div class="relative">
@@ -83,15 +92,15 @@
                   aria-labelledby="dropdownButton"
                 >
                   <a
-                    href="/login"
+                    href="/registrarUsuario"
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     role="menuitem"
                   >Iniciar sesion</a>
                   <a
-                    href="/registrarUsuario"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 open-modal"
+                    href="/logout"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     role="menuitem"
-                  >Registrarse</a>
+                  >Cerrar sesión</a>
                 </div>
               </div>
             </div>
@@ -101,40 +110,9 @@
     </div>
   </div>
 </nav>
-{{! modal para form }}
-<div
-  id="modal"
-  class="fixed inset-0 hidden bg-gray-900 bg-opacity-50 flex items-center justify-center z-50"
->
-  <div class="bg-white rounded-lg w-3/4 max-w-lg shadow-lg">
-    <button
-      id="closeModal"
-      class="text-gray-500 hover:text-gray-900 absolute top-4 right-4"
-    >x</button>
-    <div id="modal-content" class="p-6">
-      <!-- contenido del modal -->
-    </div>
-  </div>
-</div>
-
 <script>
-  document.addEventListener("DOMContentLoaded", () => { const openModalButtons =
-  document.querySelectorAll(".open-modal"); const closeModal =
-  document.getElementById("closeModal"); const modal =
-  document.getElementById("modal"); const modalContent =
-  document.getElementById("modal-content"); openModalButtons.forEach(button => {
-  button.addEventListener("click", async (e) => { e.preventDefault(); try {
-  const response = await fetch(button.href); if (!response.ok) throw new
-  Error("Error al cargar el formulario"); const content = await response.text();
-  modalContent.innerHTML = content; modal.classList.remove("hidden"); } catch
-  (error) { console.error(error); alert("No se pudo cargar el formulario."); }
-  }); }); closeModal.addEventListener("click", () => {
-  modal.classList.add("hidden"); modalContent.innerHTML = ""; });
-  modal.addEventListener("click", (e) => { if (e.target === modal) { // Solo
-  cierra si el clic es fuera del contenido modal.classList.add("hidden");
-  modalContent.innerHTML = ""; } }); }); const dropdownButton =
-  document.getElementById('dropdownButton'); const dropdownMenu =
-  document.getElementById('dropdownMenu');
+  const dropdownButton = document.getElementById('dropdownButton'); const
+  dropdownMenu = document.getElementById('dropdownMenu');
   dropdownButton.addEventListener('click', () => {
   dropdownMenu.classList.toggle('hidden'); });
   document.addEventListener('click', (event) => { if
