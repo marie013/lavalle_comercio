@@ -65,9 +65,11 @@ const perfil = (req, res) => {
     console.log("Nombre:", nombre);
     console.log("Email:", email);
     console.log("Teléfono:", telefono);
-
+    // traigo el comercio que tiene un usuario
+    
+    // const nombreCom= comercios.nombre
     // Pasar la información a la plantilla
-    res.render("users/perfil", { nombre, email, telefono });
+    res.render("users/perfil", { nombre, email, telefono, idUsuario});
 };
 
 // ----------listar usuarios----------

@@ -54,11 +54,15 @@
                 </select>
             </div>
 
+
+            <!-- Disponibilidad, ver dijieron que podia llegar a ser la cantidad...-->
             <div class="relative mb-4">
-                <label for="disponobilidad" class="leading-7 text-sm text-gray-600">Disponibilidad</label>
-                <input type="number" id="disponibilidad" name="disponibilidad" value="{{producto.disponibilidad}}"
-                    class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                    required>
+                <label for="disponibilidad" class="leading-7 text-sm text-gray-600">Disponibilidad</label>
+                <select id="disponibilidad" name="disponibilidad"
+                    class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                    <option value="true" {{#if producto.disponibilidad}}selected{{/if}}>Disponible</option>
+                    <option value="false" {{#unless producto.disponibilidad}}selected{{/unless}}>No disponible</option>
+                </select>
             </div>
 
             <!-- Oferta -->
