@@ -1,0 +1,48 @@
+{{>navbar}}
+<div class="bg-gray-100 p-6 rounded-lg shadow-lg">
+    {{#each comercios}}
+    <div class="mb-6">
+        <h3 class="text-lg font-bold text-gray-900">{{this.nombre}}</h3> <!-- Nombre del comercio -->
+        <table class="min-w-full bg-white border border-gray-200 rounded-lg mt-4">
+            <thead>
+                <tr class="bg-gray-100 border-b">
+                    <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+                    <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Categoria</th>
+                    <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Precio</th>
+                    <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Disponibilidad</th>
+                    <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Oferta</th>
+                    <th class="px-6 py-3"></th>
+                    <th class="px-6 py-3"></th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                {{#each this.productos}}
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{this.nombre_producto}}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{this.nombreCategoria}}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{this.precio}}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{this.disponibilidad}}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {{#if this.oferta}}Sí{{else}}No{{/if}}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <form action="{{URL}}/eliminarProducto/{{this.id_producto}}?_method=DELETE" method="POST">
+                            <button type="submit"
+                                class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                Eliminar
+                            </button>
+                        </form>
+                    </td>
+                    <td>
+                        <a href="{{URL}}/editarProducto/{{this.id_producto}}"
+                            class="text-sm bg-blue-500 hover:bg-blue-800 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                            Modificar
+                        </a>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+    {{/each}}
+</div>

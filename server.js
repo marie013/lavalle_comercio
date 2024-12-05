@@ -48,6 +48,7 @@ app.get('/registrarUsuario', usuarioRoutes.formRegistrarUsuario);
 app.post('/registrarUsuario', usuarioRoutes.registrarUsuario);
 app.get('/sobreNosotros', usuarioRoutes.sobreNosotros );
 app.get("/perfil", logueado, usuarioRoutes.perfil);
+app.get("/tusProductos", logueado, comercioRoutes.prodComercio);
  
 // administrador
 app.get('/listarUsuarios', logueado, admin, usuarioRoutes.listarUsuarios);
@@ -72,8 +73,8 @@ app.get('/agregarProducto', logueado, productoRoutes.formAgregarProducto)
 app.post('/agregarProducto', logueado, upload.single('imgProducto'), productoRoutes.agregarProducto)
 app.get("/listarProductos", logueado, productoRoutes.listarProductos);
 app.delete("/eliminarProducto/:id_producto", productoRoutes.eliminarProducto);
-app.get("/editarProducto/:idProducto", logueado, admin, productoRoutes.formEditarProducto);
-app.post("/producto/editar/:idProducto", logueado, admin,productoRoutes.modificarProducto);
+app.get("/editarProducto/:idProducto", logueado, productoRoutes.formEditarProducto);
+app.post("/producto/editar/:idProducto", logueado, productoRoutes.modificarProducto);
  
 // comercio
 app.get('/agregarComercio', logueado, comercioRoutes.formAgregarComercio);
