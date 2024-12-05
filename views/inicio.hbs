@@ -220,10 +220,16 @@ function showProductModal(product) {
     }
   });
 
-  document.getElementById("closeModal").addEventListener("click", () => {
-    document.getElementById("productModal").classList.add("hidden");
-    document.getElementById("productModal").classList.remove("flex");
-  });
+ document.getElementById("productModal").addEventListener("click", (event) => {
+  const modalContent = document.getElementById("modalContent");
+  
+  // Close if click is outside the modal content
+  if (!modalContent.contains(event.target)) {
+    const modal = document.getElementById("productModal");
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+  }
+});
 
   // Filtros
   document.getElementById("categoryFilter").addEventListener("change", applyFilters);
