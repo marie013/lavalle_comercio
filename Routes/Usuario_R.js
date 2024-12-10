@@ -120,7 +120,7 @@ const registrarUsuario = (req, res) => {
       email: req.body.email,
       telefono: req.body.telefono,
       contrasena: req.body.pass,
-      rol: req.body.rol,
+      rol: false,
     })
     .then((response) => {
       if (response.status === 201) {
@@ -140,7 +140,7 @@ const home = (req, res) => {
 };
 //registrar administrador
 const formRegistrarAdministrador = (req, res) => {
-  res.render("administrador/agregarAdmi", {});
+  res.render("agregarAdmin", {});
 };
 const registrarAdministrador = (req, res) => {
   console.log(req.body.nombre);
@@ -150,11 +150,11 @@ const registrarAdministrador = (req, res) => {
       email: req.body.email,
       telefono: req.body.telefono,
       contrasena: req.body.pass,
-      rol: req.body.rol,
+      rol: true,
     })
     .then((response) => {
       if (response.status === 201) {
-        if (req.cookies.rol === true) {
+        if (req.cookies.rol == "true") {
           res.redirect("/listarUsuarios");
         } else {
           res.render("./agregarUsuario", {});
