@@ -6,13 +6,15 @@
     <title>Login</title>
   </head>
   <body
-    class="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12 scroll-smooth"
+    class="overflow-y-hidden bg-gray-100 py-6 flex flex-col justify-center sm:py-12 scroll-smooth"
   >
     <div class="relative py-3 sm:max-w-xl sm:mx-auto p-28">
       <div
-        class="absolute inset-0 bg-gradient-to-r from-amber-500 to-amber-700 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"
+        class="absolute mx-auto inset-0 bg-gradient-to-r from-amber-500 to-amber-700 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"
       ></div>
-      <div class="relative bg-white shadow-lg sm:rounded-3xl w-full px-24 py-6">
+      <div
+        class="relative bg-white shadow-lg sm:rounded-3xl w-[24rem] px-6 py-6"
+      >
         <div class="max-w-md mx-auto">
 
           <div class="flex justify-center mb-8">
@@ -31,12 +33,12 @@
                   type="text"
                   autocomplete="off"
                   required
-                  class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-amber-500"
+                  class="peer px-2 placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-amber-500"
                   placeholder="Email"
                 />
                 <label
                   for="user"
-                  class="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+                  class="absolute left-0 -top-3.5 text-gray-600 text-sm"
                 >Email</label>
               </div>
               <div class="relative">
@@ -46,12 +48,12 @@
                   type="password"
                   autocomplete="current-password"
                   required
-                  class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-amber-500"
+                  class="peer px-2 placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-amber-500"
                   placeholder="Contraseña"
                 />
                 <label
                   for="password"
-                  class="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+                  class="absolute left-0 -top-3.5 text-gray-600 text-sm"
                 >Contraseña</label>
               </div>
               <div class="flex justify-between text-sm">
@@ -67,6 +69,13 @@
                   class="bg-zinc-800 w-full text-amber-500 rounded-md px-3 py-2 text-sm font-medium hover:bg-zinc-700"
                 >Enviar</button>
               </div>
+
+              <div style="color: red; font-weight: bold; height:2rem;">
+                {{#if error}}
+                  {{error}}
+                {{/if}}
+              </div>
+
             </form>
           </div>
         </div>
