@@ -2,10 +2,12 @@ const express = require("express");
 const path = require("path");
 const hbs = require("hbs");
 
-// Registrar el helper `eq` para comparación estricta
+// Registrar el helpers necesarios
 hbs.registerHelper("eq", (value1, value2) => {
   return value1 == value2;
 });
+
+hbs.registerHelper("or", (a, b) => a || b);
 
 const methodOverride = require("method-override");
 const fs = require("fs");
