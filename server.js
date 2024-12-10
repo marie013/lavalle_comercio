@@ -1,6 +1,12 @@
 const express = require("express");
 const path = require("path");
 const hbs = require("hbs");
+
+// Registrar el helper `eq` para comparación estricta
+hbs.registerHelper("eq", (value1, value2) => {
+  return value1 == value2;
+});
+
 const methodOverride = require("method-override");
 const fs = require("fs");
 const axios = require("axios");

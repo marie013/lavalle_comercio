@@ -23,10 +23,10 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{this.precio}}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{this.disponibilidad}}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        {{#if this.oferta}}Sí{{else}}No{{/if}}
+                        {{#if (eq this.oferta "true")}}Sí{{else}}No{{/if}}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <form action="{{URL}}/eliminarProducto/{{this.id_producto}}?_method=DELETE" method="POST">
+                        <form action="{{URL}}/eliminarProducto/{{this.id_producto}}?_method=DELETE" method="POST" class="my-0">
                             <button type="submit"
                                 class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
                                 Eliminar
