@@ -130,25 +130,42 @@
         </div>
       </div>
     </form>
-    <script>
-      async function submitForm() { const form =
-      document.getElementById('agregarProductoForm'); const formData = new
-      FormData(form); // Obtener el ID del comercio seleccionado const
-      comercioSeleccionado = document.getElementById('comercio').value; //
-      Verificar el valor del comercio seleccionado console.log("ID del comercio
-      seleccionado:", comercioSeleccionado); if (!comercioSeleccionado) {
-      alert('Por favor selecciona un comercio.'); return; } // Asegurarte de
-      incluir el comercio en los datos enviados formData.set('idComercio',
-      comercioSeleccionado); // Otros campos adicionales, como la oferta
-      formData.set("oferta", document.getElementById("oferta").checked); try {
-      // Usar el ID del comercio seleccionado en la URL const response = await
-      axios.post(`http://localhost:3333/producto/registrar/${comercioSeleccionado}`,
-      formData, { headers: { 'Content-Type': 'multipart/form-data' } });
-      window.location.href = '/menuComercio'; } catch (error) {
-      console.error('Error al enviar el producto:', error.response?.data ||
-      error.message); alert('Error al agregar producto'); } }
+        <script>
+            async function submitForm() {
+                const form = document.getElementById('agregarProductoForm');
+                const formData = new FormData(form);
 
-    </script>
-  </section>
+                // Obtener el ID del comercio seleccionado
+                const comercioSeleccionado = document.getElementById('comercio').value;
+
+                // Verificar el valor del comercio seleccionado
+                console.log("ID del comercio seleccionado:", comercioSeleccionado);
+
+                if (!comercioSeleccionado) {
+                    alert('Por favor selecciona un comercio.');
+                    return;
+                }
+
+                // Asegurarte de incluir el comercio en los datos enviados
+                formData.set('idComercio', comercioSeleccionado);
+
+                // Otros campos adicionales, como la oferta
+                formData.set("oferta", document.getElementById("oferta").checked);
+
+                try {
+                    // Usar el ID del comercio seleccionado en la URL
+                    const response = await axios.post(`http://localhost:3333/producto/registrar/${comercioSeleccionado}`, formData, {
+                        headers: { 'Content-Type': 'multipart/form-data' }
+                    });
+                    window.location.href = '/menuComercio';
+                } catch (error) {
+                    console.error('Error al enviar el producto:', error.response?.data || error.message);
+                    alert('Error al agregar producto');
+                }
+            }
+
+        </script>
+    </section>
+
 
 </html>
