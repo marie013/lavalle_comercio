@@ -105,6 +105,59 @@ const agregarComercio = (req, res) => {
             res.status(500).send("Error al agregar comercio");
         });
 };
+//form editar com
+const formEditarComercio = (req, res) => {
+    const idComercio = req.params.idComercio;
+    console.log("El ID del comercio a modificar es:", idComercio);
+
+    // Solicitar los datos del comercio desde el servidor
+    axios.get(`http://localhost:3333/comercio/${idComercio}`)
+        .then(response => {
+            console.log(response.data);
+            const comercio = response.data;
+
+            res.render("comercio/editarComercio", { comercio: comercio });
+        })
+        .catch(error => {
+            console.error("Error al obtener el comercio:", error);
+            res.status(500).send("Error al obtener el comercio");
+        });
+};
+
+//editar un comercio
+const editarComercio = async (req, res) => {
+    const idComercio = req.params.idComercio; 
+    const { nombre, cuit, direccion } = req.body; 
+    const rol = req.cookies.rol; 
+
+    // Crear el objeto con los datos actualizados del comercio
+    const comercioModificado = {
+        nombre: nombre,
+        cuit: cuit,
+        direccion: direccion,
+    };
+
+    console.log('Datos del comercio a modificar:', comercioModificado);
+
+    // Solicitud PUT al backend
+    axios.put(`http://localhost:3333/comercio/editar/${idComercio}`, comercioModificado)
+        .then(response => {
+            if (response.status === 200) {
+                // Redirigir según el rol del usuario
+                if (rol === true) {
+                    res.redirect("/listarComercios");
+                } else { 
+                    res.redirect("/perfil");
+                }
+            } else {
+                res.status(500).send("Error al actualizar el comercio");
+            }
+        })
+        .catch(error => {
+            console.error('Error al actualizar el comercio:', error);
+            res.status(500).send('Error al actualizar el comercio');
+        });
+};
 
 // mostrar los productos de los comercios donde fk_idUsuario == idUsuario(de la cookie)
 const prodComercio = (req, res) => {
@@ -167,6 +220,23 @@ const eliminarComercio = (req, res) => {
             });
         });
 };
+const eliminarComercioUser = (req, res) => {
+    const idComercio = req.params.idComercio; 
+    console.log("ID del comercio a eliminar por el usuario:", idComercio);
+
+    axios.delete(`http://localhost:3333/comercio/${idComercio}`)
+        .then(() => {
+            console.log("Comercio eliminado correctamente por el usuario");
+            res.redirect('/perfil'); 
+        })
+        .catch((error) => {
+            console.error("Error al eliminar el comercio por el usuario:", error.response ? error.response.data : error.message);
+            res.status(500).render('users/perfil', {
+                error: "No se pudo eliminar el comercio. Intenta nuevamente.",
+            });
+        });
+};
+
 
 
 module.exports = {
@@ -176,5 +246,8 @@ module.exports = {
     eliminarComercio,
     menuComercio,
     listarComercioPorId,
-    prodComercio
+    prodComercio,
+    formEditarComercio,
+    editarComercio,
+    eliminarComercioUser
 };

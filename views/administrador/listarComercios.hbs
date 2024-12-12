@@ -39,11 +39,20 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             {{this.telefonoUsuario}}
                         </td>
-                        <td>
-                            <form action="{{URL}}/eliminarComercio/{{idComercio}}?_method=DELETE" method="POST">
-                                <button type="submit"
-                                    class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none font-medium focus:shadow-outline">Eliminar</button>
-                            </form>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <div class="flex space-x-2 ml-auto text-left">
+                                <form action="{{URL}}/eliminarComercio/{{idComercio}}?_method=DELETE" method="POST"
+                                    class="m-0">
+                                    <button type="submit"
+                                        class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                        Eliminar
+                                    </button>
+                                </form>
+                                <a href="{{url}}/editarComercio/{{idComercio}}"
+                                    class="bg-amber-500 hover:bg-amber-800 text-sm text-black font-medium py-1 px-2 rounded focus:outline-none focus:shadow-outline open-modal">
+                                    Editar
+                                </a>
+                            </div>
                         </td>
                     </tr>
                     {{/each}}
