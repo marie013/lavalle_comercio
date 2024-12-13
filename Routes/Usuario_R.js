@@ -124,7 +124,7 @@ const registrarUsuario = (req, res) => {
     })
     .then((response) => {
       if (response.status === 201) {
-        res.render("./index", {});
+        res.redirect("/");
       } else {
         console.log("Error en los datos ingresados");
       }
