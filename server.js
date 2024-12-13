@@ -161,6 +161,8 @@ app.get("/comercio/:id", logueado, comercioRoutes.listarComercioPorId);
 app.get('/editarComercio/:idComercio', logueado, comercioRoutes.formEditarComercio);
 app.post('/comercio/editar/:idComercio', logueado, comercioRoutes.editarComercio);
 app.delete('/eliminarComercio/:idComercio', logueado, comercioRoutes.eliminarComercioUser);
+app.delete('/eliminarComercioUser/:idComercio', logueado, comercioRoutes.eliminarComercioUser);
+
 
 app.get("/logout", usuarioRoutes.logout);
 
